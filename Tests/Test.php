@@ -26,7 +26,7 @@ class Test extends TestCase
 
     public function testGetAddress()
     {
-        $api = new Payment\PaymentAPI('17882', '165964686216');
+        $api = new Payment\PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
         $response = $api->getAddress([ "pno" => "550101-1018", "country" => "SE" ]);
         $this->assertIsObject($response);
         $this->assertObjectHasProperty('data', $response);
