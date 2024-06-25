@@ -18,7 +18,7 @@ class PaylinkAPI
 
     public function create(array $data): string|array|stdClass
     {
-        $data = new Data();
+        $data = new Data($data);
         return $this->paymentAPI->addPayment($data);
     }
 

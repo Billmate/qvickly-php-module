@@ -7,6 +7,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use Qvickly\Api\Enums\HttpMethod;
 
 use Qvickly\Api\Payment\DataObjects\Credentials;
@@ -18,6 +19,35 @@ use stdClass;
 
 use function PHPUnit\Framework\throwException;
 
+/**
+ * Class PaymentAPI
+ * @package Qvickly\Api\Payment
+ * @method array getAddress()
+ * @method array addPayment()
+ * @method array activatePayment()
+ * @method array updatePayment()
+ * @method array cancelPayment()
+ * @method array creditPayment()
+ * @method array getAccountInfo()
+ * @method string getTerms()
+ * @method array getPaymentPlans()
+ * @method array getPaymentInfo()
+ * @method array getDuePayments()
+ * @method array getSettlements()
+ * @method array getSettlementsWithDetails()
+ * @method array getCustomersByName()
+ * @method array getInvoicesByPno()
+ * @method array getInvoicesByCustomer()
+ * @method array getExchangeRate()
+ * @method array getVatrate()
+ * @method array getFees()
+ * @method array crediflowSearchParty()
+ * @method array getOrderInfo()
+ * @method array getOrderByHash()
+ * @method array getInvoiceByHash()
+ * @method array createInvoiceFromOrderHash()
+ * @method array getAPICredentials()
+ */
 class PaymentAPI
 {
     const QVICKLY_API_BASE_URL = 'https://api.qvickly.io/';

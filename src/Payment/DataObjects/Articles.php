@@ -8,7 +8,7 @@ class Articles extends DataObject
     public function __construct(array $data = [])
     {
         parent::__construct();
-        foreach ($data as $key => $value) {
+        foreach ($data as $value) {
             if (is_array($value)) {
                 $this->data[] = new Article($value);
             }

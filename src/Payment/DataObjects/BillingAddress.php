@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Qvickly\Api\Payment\DataObjects;
 
-use Qvickly\Api\Payment\Interfaces\DataObjectInterface;
-
 #[
     StructureProperty(['name'=>'method', 'type'=>'int', 'required'=>false, 'default' => 0]),
     StructureProperty(['name'=>'currency', 'type'=>'string', 'required'=>false, 'default' => 'SEK']),

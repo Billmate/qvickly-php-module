@@ -12,11 +12,12 @@ require '../../src/Payment/PaymentAPI.php';
 
 use Qvickly\Api\Payment\PaymentAPI;
 use Qvickly\Api\Payment\DataObjects\Data;
+use Qvickly\Api\Payment\DataObjects\PaymentData;
 
 $paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET'], testMode: true);
 $data = new Data(
     [
-        "PaymentData" => new \Qvickly\Api\Payment\DataObjects\PaymentData([
+        "PaymentData" => new PaymentData([
             "comingFromPF2" => "1"
         ])
     ]
