@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Qvickly\Api\Payment;
 
@@ -6,6 +7,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use Qvickly\Api\Enums\HttpMethod;
+
+use Qvickly\Api\Payment\DataObjects\Data;
 
 use function PHPUnit\Framework\throwException;
 
@@ -25,25 +28,28 @@ class PaymentAPI
     {
         return hash_hmac('sha512', $data, $secret);
     }
-    public function __call(string $name, array|null $arguments): string|array|\stdClass
+    public function __call(string $name, Data|array|null $arguments): string|array|\stdClass
     {
         $arguments = $arguments ?? [];
+        $data = $arguments[0] ?? [];
+        if(is_array($data)) {
+            $data = new Data($data);
+        }
         $url = static::QVICKLY_API_BASE_URL;
         $headers = [
             'Content-Type' => 'application/json',
         ];
-        $data = json_encode($arguments[0]) ?? [];
         $rawBody = [
             'credentials' => [
                 'id' => $this->eid,
-                'hash' => static::generateHash($this->secret, $data),
+                'hash' => $data->hash($this->secret),
                 'version' => '2.5.0',
                 'client' => 'qvickly-php-sdk',
                 'language' => 'sv',
                 'time' => time(),
                 'testMode' => $this->testMode ? 'true' : 'false',
             ],
-            'data' => $arguments[0] ?? [],
+            'data' => $data->export(),
             'function' => $name,
         ];
         $sendBody = json_encode($rawBody);
