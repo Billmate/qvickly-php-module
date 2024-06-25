@@ -27,9 +27,4 @@ class PaymentData extends DataObject
         parent::__construct($data);
     }
 
-    public function export(): array|string
-    {
-        // TODO: Implement export() method.
-        return [];
-    }
 }

@@ -5,6 +5,7 @@ namespace Qvickly\Api\Paylink;
 
 use Qvickly\Api\Payment\DataObjects\Data;
 use Qvickly\Api\Payment\PaymentAPI;
+use stdClass;
 
 class PaylinkAPI
 {
@@ -15,7 +16,7 @@ class PaylinkAPI
         $this->paymentAPI = new PaymentAPI($this->eid, $this->secret, $this->testMode);
     }
 
-    public function create(array $data): string|array|\stdClass
+    public function create(array $data): string|array|stdClass
     {
         $data = new Data();
         return $this->paymentAPI->addPayment($data);

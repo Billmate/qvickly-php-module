@@ -13,12 +13,13 @@ require '../../src/Payment/PaymentAPI.php';
 use Qvickly\Api\Payment\PaymentAPI;
 use Qvickly\Api\Payment\DataObjects\Data;
 
-$paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
+$paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET'], testMode: true);
 $data = new Data(
     [
-        "pno" => "550101-1018",
-        "country" => "SE"
+        "PaymentData" => new \Qvickly\Api\Payment\DataObjects\PaymentData([
+            "comingFromPF2" => "1"
+        ])
     ]
 );
-$address = $paymentAPI->getAddress($data);
-print_r($address);
+$payment = $paymentAPI->getAccountInfo($data);
+print_r($payment);

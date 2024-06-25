@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Qvickly\Api\Payment;
 
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
@@ -12,6 +13,8 @@ use Qvickly\Api\Payment\DataObjects\Credentials;
 use Qvickly\Api\Payment\DataObjects\Data;
 
 use Qvickly\Api\Payment\DataObjects\Payload;
+
+use stdClass;
 
 use function PHPUnit\Framework\throwException;
 
@@ -31,7 +34,7 @@ class PaymentAPI
     {
         return hash_hmac('sha512', $data, $secret);
     }
-    public function __call(string $name, Data|array|null $arguments): string|array|\stdClass
+    public function __call(string $name, Data|array|null $arguments): string|array|stdClass
     {
         $arguments = $arguments ?? [];
         $data = $arguments[0] ?? [];
@@ -67,13 +70,13 @@ class PaymentAPI
                     return $body;
                 }
                 if(isset($json->credentials?->hash) && $json->credentials->hash !== static::generateHash($this->secret, json_encode($json->data))) {
-                    throwException(new \Exception('Invalid hash'));
+                    throwException(new Exception('Invalid hash'));
                 }
-                if($this->onlyReturnData) {
+                if($this->onlyReturnData && isset($json->data)) {
                     return $json->data;
                 }
                 return $json;
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 print("JSON Exception ");
                 print_r($e->getMessage());
             }
@@ -81,7 +84,7 @@ class PaymentAPI
             print("GuzzleException ");
             print_r($e->getMessage());
         }
-        return new \stdClass();
+        return new stdClass();
     }
 
     public function __invoke()

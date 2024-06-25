@@ -33,6 +33,7 @@ class DataObject implements DataObjectInterface
         $validator = new Validator();
         $validator->setDefaultValues($this->data, static::class);
     }
+
     public function export(): array|string
     {
         return $this->subExport($this->data);

@@ -26,6 +26,6 @@ class Data extends DataObject
 
     public function hash(string $secret)
     {
-        return hash_hmac('sha512', json_encode($this->data), $secret);
+        return hash_hmac('sha512', json_encode($this->export()), $secret);
     }
 }
