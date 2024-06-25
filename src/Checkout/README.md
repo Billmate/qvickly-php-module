@@ -1,0 +1,1 @@
+# Qvickly Checkout API
