@@ -1,0 +1,1 @@
+# Qvickly MyQvickly API - Examples
