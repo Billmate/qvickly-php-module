@@ -10,9 +10,9 @@ class CredentialsTest extends TestCase
 {
     public function testCredentials()
     {
-        $credentials = new Credentials();
-        $credentials->id = 123456;
-        $credentials->hash = '123';
+        $credentials = new Credentials([
+            'id' => 123456,
+            'hash' => '123']);
         $this->assertEquals($credentials->validate(), true);
     }
 

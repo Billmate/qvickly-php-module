@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Qvickly\Api\Payment\DataObjects;
 
 use Qvickly\Api\Payment\Interfaces\DataObjectInterface;
-use Qvickly\Api\Structure\Structure;
 use Qvickly\Api\Structure\Validator;
 
 class DataObject implements DataObjectInterface
@@ -36,7 +35,22 @@ class DataObject implements DataObjectInterface
     }
     public function export(): array|string
     {
-        return $this->data;
+        return $this->subExport($this->data);
     }
 
+    protected function subExport(mixed $data): mixed
+    {
+        if(is_array($data) && count($data) > 0) {
+            $export = [];
+            foreach ($data as $key => $value) {
+                if($value instanceof DataObject) {
+                    $export[$key] = $value->export();
+                } else {
+                    $export[$key] = $this->subExport($value);
+                }
+            }
+            return $export;
+        }
+        return $data;
+    }
 }

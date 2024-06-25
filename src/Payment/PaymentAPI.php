@@ -8,7 +8,10 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use Qvickly\Api\Enums\HttpMethod;
 
+use Qvickly\Api\Payment\DataObjects\Credentials;
 use Qvickly\Api\Payment\DataObjects\Data;
+
+use Qvickly\Api\Payment\DataObjects\Payload;
 
 use function PHPUnit\Framework\throwException;
 
@@ -17,7 +20,7 @@ class PaymentAPI
     const QVICKLY_API_BASE_URL = 'https://api.qvickly.io/';
     private Client $client;
 
-    public function __construct(private readonly string $eid, private readonly string $secret, private readonly bool $testMode = false)
+    public function __construct(private readonly string $eid, private readonly string $secret, private readonly bool $testMode = false, private bool $onlyReturnData = true)
     {
         $this->client = new Client([
             'base_uri' => self::QVICKLY_API_BASE_URL
@@ -39,20 +42,21 @@ class PaymentAPI
         $headers = [
             'Content-Type' => 'application/json',
         ];
-        $rawBody = [
-            'credentials' => [
-                'id' => $this->eid,
-                'hash' => $data->hash($this->secret),
-                'version' => '2.5.0',
-                'client' => 'qvickly-php-sdk',
-                'language' => 'sv',
-                'time' => time(),
-                'testMode' => $this->testMode ? 'true' : 'false',
-            ],
-            'data' => $data->export(),
+        $credentials = new Credentials([
+            'id' => $this->eid,
+            'hash' => $data->hash($this->secret),
+            'version' => '2.5.0',
+            'client' => 'qvickly-php-sdk',
+            'language' => 'sv',
+            'time' => time(),
+            'testMode' => $this->testMode ? 'true' : 'false',
+        ]);
+        $payload = new Payload([
+            'credentials' => $credentials,
+            'data' => $data,
             'function' => $name,
-        ];
-        $sendBody = json_encode($rawBody);
+        ]);
+        $sendBody = json_encode($payload->export());
         $request = new Request(HttpMethod::POST->value, $url, $headers, $sendBody);
         try {
             $response = $this->client->send($request);
@@ -64,6 +68,9 @@ class PaymentAPI
                 }
                 if(isset($json->credentials?->hash) && $json->credentials->hash !== static::generateHash($this->secret, json_encode($json->data))) {
                     throwException(new \Exception('Invalid hash'));
+                }
+                if($this->onlyReturnData) {
+                    return $json->data;
                 }
                 return $json;
             } catch (\Exception $e) {
