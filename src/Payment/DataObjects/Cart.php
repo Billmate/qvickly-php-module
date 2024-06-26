@@ -6,7 +6,7 @@ class Cart extends DataObject
 {
     protected CartHandling $handling;
     protected CartShipping $shipping;
-    protected CartTotal $total;
+    protected CartTotal $Total;
 
     public function __construct(array $data = [])
     {
@@ -28,7 +28,7 @@ class Cart extends DataObject
                 if(is_array($value)) {
                     $value = new CartTotal($value);
                 }
-                $this->total = $value;
+                $this->Total = $value;
             }
         }
     }
@@ -39,37 +39,37 @@ class Cart extends DataObject
             return $this->handling;
         } elseif($name === 'Shipping') {
             return $this->shipping;
-        } elseif($name === 'total') {
-            return $this->total;
+        } elseif($name === 'Total') {
+            return $this->Total;
         }
         return parent::__get($name);
     }
 
     public function updateTotals(int $withouttax, int $tax, int $withtax, int|null $rounding = null): void
     {
-        if(!isset($this->total)) {
-            $this->total = new CartTotal();
+        if(!isset($this->Total)) {
+            $this->Total = new CartTotal();
         }
-        $this->total->withouttax = 0;
-        $this->total->tax = 0;
-        $this->total->withtax = 0;
-        $this->total->rounding = 0;
+        $this->Total->withouttax = 0;
+        $this->Total->tax = 0;
+        $this->Total->withtax = 0;
+        $this->Total->rounding = 0;
 
         if(isset($this->handling)) {
-            $this->total->withouttax += $this->handling->withouttax;
-            $this->total->tax += ($this->handling->withouttax * $this->handling->taxrate / 100);
-            $this->total->withtax += ($this->handling->withouttax * ($this->handling->taxrate + 100) / 100);
+            $this->Total->withouttax += $this->handling->withouttax;
+            $this->Total->tax += ($this->handling->withouttax * $this->handling->taxrate / 100);
+            $this->Total->withtax += ($this->handling->withouttax * ($this->handling->taxrate + 100) / 100);
         }
         if(isset($this->shipping)) {
-            $this->total->withouttax += $this->shipping->withouttax;
-            $this->total->tax += ($this->shipping->withouttax * $this->shipping->taxrate / 100);
-            $this->total->withtax += ($this->shipping->withouttax * ($this->shipping->taxrate + 100) / 100);
+            $this->Total->withouttax += $this->shipping->withouttax;
+            $this->Total->tax += ($this->shipping->withouttax * $this->shipping->taxrate / 100);
+            $this->Total->withtax += ($this->shipping->withouttax * ($this->shipping->taxrate + 100) / 100);
         }
-        $this->total->withouttax += $withouttax;
-        $this->total->tax += $tax;
-        $this->total->withtax += $withtax;
+        $this->Total->withouttax += $withouttax;
+        $this->Total->tax += $tax;
+        $this->Total->withtax += $withtax;
         if($rounding !== null) {
-            $this->total->rounding += $rounding;
+            $this->Total->rounding += $rounding;
         }
     }
 
@@ -82,8 +82,8 @@ class Cart extends DataObject
         if(isset($this->shipping)) {
             $export['Shipping'] = $this->shipping->export();
         }
-        if(isset($this->total)) {
-            $export['total'] = $this->total->export();
+        if(isset($this->Total)) {
+            $export['Total'] = $this->Total->export();
         }
         return $export;
     }

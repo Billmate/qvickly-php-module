@@ -13,12 +13,20 @@ class Customer extends DataObject
     {
         if(is_array($data)) {
             if($data['Billing']) {
-                $this->billingAddress = new BillingAddress($data['Billing']);
+                if(is_array($data['Billing'])) {
+                    $this->billingAddress = new BillingAddress($data['Billing']);
+                } elseif($data['Billing'] instanceof BillingAddress) {
+                    $this->billingAddress = $data['Billing'];
+                }
                 unset($data['billing']);
             }
             if($data['Shipping']) {
-                $this->shippingAddress = new ShippingAddress($data['Shipping']);
-                unset($data['shipping']);
+                if(is_array($data['Shipping'])) {
+                    $this->shippingAddress = new ShippingAddress($data['Shipping']);
+                } elseif($data['Shipping'] instanceof ShippingAddress) {
+                    $this->shippingAddress = $data['Shipping'];
+                }
+                unset($data['Shipping']);
             }
         }
         parent::__construct($data);
@@ -27,10 +35,10 @@ class Customer extends DataObject
     public function export(): array
     {
         $export = parent::export();
-        if($this->billingAddress instanceof BillingAddress){
+        if(isset($this->billingAddress) && $this->billingAddress instanceof BillingAddress){
             $export['Billing'] = $this->billingAddress->export();
         }
-        if ($this->shippingAddress instanceof ShippingAddress) {
+        if (isset($this->shippingAddress) && $this->shippingAddress instanceof ShippingAddress) {
             $export['Shipping'] = $this->shippingAddress->export();
         }
         return $export;

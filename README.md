@@ -5,8 +5,10 @@ This module is a one-stop-solution for all your Qvickly API needs.
 
 API's implemented:
 - 
-API's in progress:
+API's in test phase:
 - PaymentAPI - [Code](./src/Payment) / [Docs](https://billmate.github.io/QvicklyDocumentation/qvickly-api.html)
+
+API's in progress:
 
 API's in the pipe:
 - PaylinkAPI - [Code](./src/Paylink) / [Docs](https://billmate.github.io/QvicklyDocumentation/paylink.html)
