@@ -8,15 +8,23 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
 $dotenv->load();
 
+'../../src/Payment/PaymentAPI.php';
+
 use Qvickly\Api\Payment\PaymentAPI;
 use Qvickly\Api\Payment\DataObjects\Data;
+use Qvickly\Api\Payment\DataObjects\PaymentData;
 
 $paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
 $data = new Data(
     [
-        "pno" => "550101-1018",
-        "country" => "SE"
+        "PaymentData" => new PaymentData(
+            [
+                "country" => "SE",
+                "currency" => "SEK",
+                "language" => "sv",
+            ]
+        )
     ]
 );
-$address = $paymentAPI->getAddress($data);
-print_r($address);
+$plans = $paymentAPI->getPaymentPlans($data);
+print_r($plans);

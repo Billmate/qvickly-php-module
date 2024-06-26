@@ -11,11 +11,11 @@ $dotenv->load();
 use Qvickly\Api\Payment\PaymentAPI;
 use Qvickly\Api\Payment\DataObjects\Data;
 
-$paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET'], testMode: true);
+$paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
 $data = new Data(
     [
-        "number" => "12345"
+        "settlementId" => "1"
     ]
 );
-$payment = $paymentAPI->creditPayment($data);
-print_r($payment);
+$settlement = $paymentAPI->getSettlementsWithDetails($data);
+print_r($settlement);

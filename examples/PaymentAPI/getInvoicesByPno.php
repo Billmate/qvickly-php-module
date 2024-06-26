@@ -11,11 +11,12 @@ $dotenv->load();
 use Qvickly\Api\Payment\PaymentAPI;
 use Qvickly\Api\Payment\DataObjects\Data;
 
-$paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET'], testMode: true);
+$paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
 $data = new Data(
     [
-        "number" => "12345"
+        "pno" => "5501011018",
+        "status" => "Sent,Paid",
     ]
 );
-$payment = $paymentAPI->creditPayment($data);
-print_r($payment);
+$invoices = $paymentAPI->getInvoicesByPno($data);
+print_r($invoices);

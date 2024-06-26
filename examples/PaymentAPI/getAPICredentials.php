@@ -11,11 +11,12 @@ $dotenv->load();
 use Qvickly\Api\Payment\PaymentAPI;
 use Qvickly\Api\Payment\DataObjects\Data;
 
-$paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET'], testMode: true);
+$paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
 $data = new Data(
     [
-        "number" => "12345"
+        "hash" => "123456abc123456abc123456abc12345",
+        "eid" => "23456",
     ]
 );
-$payment = $paymentAPI->creditPayment($data);
-print_r($payment);
+$credentials = $paymentAPI->getAPICredentials($data);
+print_r($credentials);

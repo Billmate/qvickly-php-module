@@ -8,8 +8,6 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
 $dotenv->load();
 
-require '../../src/Payment/PaymentAPI.php';
-
 use Qvickly\Api\Payment\PaymentAPI;
 use Qvickly\Api\Payment\DataObjects\Data;
 use Qvickly\Api\Payment\DataObjects\PaymentData;

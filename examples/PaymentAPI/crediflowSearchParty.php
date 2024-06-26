@@ -11,11 +11,11 @@ $dotenv->load();
 use Qvickly\Api\Payment\PaymentAPI;
 use Qvickly\Api\Payment\DataObjects\Data;
 
-$paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET'], testMode: true);
+$paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
 $data = new Data(
     [
-        "number" => "12345"
+        "orgnum" => "5501011018",
     ]
 );
-$payment = $paymentAPI->creditPayment($data);
-print_r($payment);
+$parties = $paymentAPI->crediflowSearchParty($data);
+print_r($parties);
