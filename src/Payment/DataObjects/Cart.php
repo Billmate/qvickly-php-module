@@ -2,6 +2,9 @@
 
 namespace Qvickly\Api\Payment\DataObjects;
 
+#[
+    StructureProperty(name: 'Total', required: true)
+]
 class Cart extends DataObject
 {
     protected CartHandling $handling;
@@ -12,19 +15,20 @@ class Cart extends DataObject
     {
         parent::__construct();
         foreach ($data as $key => $value) {
-            if ($key === 'handling') {
+            $lcKey = strtolower($key);
+            if ($lcKey === 'handling') {
                 if(is_array($value)) {
                     $value = new CartHandling($value);
                 }
                 $this->handling = $value;
             }
-            if ($key === 'shipping') {
+            if ($lcKey === 'shipping') {
                 if(is_array($value)) {
                     $value = new CartShipping($value);
                 }
                 $this->shipping = $value;
             }
-            if ($key === 'total') {
+            if ($lcKey === 'total') {
                 if(is_array($value)) {
                     $value = new CartTotal($value);
                 }
@@ -43,6 +47,24 @@ class Cart extends DataObject
             return $this->Total;
         }
         return parent::__get($name);
+    }
+
+    public function validate(array|null $data = null): bool
+    {
+        $validateData = $this->data;
+        if(is_array($data)) {
+            $validateData = array_merge_recursive($validateData, $data);
+        }
+        if(isset($this->handling)) {
+            $validateData['Handling'] = $this->handling;
+        }
+        if(isset($this->shipping)) {
+            $validateData['Shipping'] = $this->shipping;
+        }
+        if(isset($this->Total)) {
+            $validateData['Total'] = $this->Total;
+        }
+        return parent::validate($validateData);
     }
 
     public function updateTotals(int $withouttax, int $tax, int $withtax, int|null $rounding = null): void
@@ -73,17 +95,17 @@ class Cart extends DataObject
         }
     }
 
-    public function export(): array|string
+    public function export(bool $convertToExportFormat = false): array|string
     {
         $export = [];
         if(isset($this->handling)) {
-            $export['Handling'] = $this->handling->export();
+            $export['Handling'] = $this->handling->export($convertToExportFormat);
         }
         if(isset($this->shipping)) {
-            $export['Shipping'] = $this->shipping->export();
+            $export['Shipping'] = $this->shipping->export($convertToExportFormat);
         }
         if(isset($this->Total)) {
-            $export['Total'] = $this->Total->export();
+            $export['Total'] = $this->Total->export($convertToExportFormat);
         }
         return $export;
     }

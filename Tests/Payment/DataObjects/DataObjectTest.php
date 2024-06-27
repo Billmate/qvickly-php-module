@@ -2,7 +2,7 @@
 
 namespace Payment\DataObjects;
 
-use Qvickly\Api\Payment\DataObjects\DataObject;
+use Qvickly\Api\Payment\DataObjects\Data;
 use PHPUnit\Framework\TestCase;
 
 class DataObjectTest extends TestCase
@@ -15,18 +15,17 @@ class DataObjectTest extends TestCase
                 'key' => 'value2',
             ],
         ];
-        $dataObject = new DataObject($data);
+        $dataObject = new Data($data);
 
         $this->assertEquals('value1', $dataObject['key']);
         $this->assertEquals('value2', $dataObject['PaymentData:key']);
         $this->assertEquals('value1', $dataObject->key);
         $this->assertEquals('value2', $dataObject['PaymentData:key']);
-        var_dump($dataObject);
     }
 
     public function test__set()
     {
-        $dataObject = new DataObject();
+        $dataObject = new Data();
         $dataObject[] = 'value1';
         $dataObject[] = 'value2';
 

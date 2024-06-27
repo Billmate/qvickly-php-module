@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests;
+namespace Payment;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 
 use PHPUnit\Framework\TestCase;
 use Qvickly\Api\Payment;
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
 $dotenv->load();
 
-class TestPaymentAPI extends TestCase
+class PaymentAPITest extends TestCase
 {
     public function testTrue()
     {
@@ -27,7 +27,7 @@ class TestPaymentAPI extends TestCase
 
     public function testGetAddress()
     {
-        $api = new Payment\PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
+        $api = new Payment\PaymentAPI($_ENV['EID'], $_ENV['SECRET'], onlyReturnData: false);
         $response = $api->getAddress([ "pno" => "550101-1018", "country" => "SE" ]);
         $this->assertIsObject($response);
         $this->assertObjectHasProperty('data', $response);

@@ -19,8 +19,9 @@ class DataTest extends TestCase
             'quantity' => 2
         ]);
         $data->updateCart();
-        $this->assertEquals(200, $data->Cart->total->withouttax);
-        $this->assertEquals(50, $data->Cart->total->tax);
-        $this->assertEquals(250, $data->Cart->total->withtax);
+
+        $this->assertEquals(200, $data->Cart->Total->withouttax);
+        $this->assertEquals(50, $data->Cart->Total->tax);
+        $this->assertEquals(250, $data->Cart->Total->withtax);
     }
 }

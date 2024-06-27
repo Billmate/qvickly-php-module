@@ -4,7 +4,13 @@ declare(strict_types=1);
 namespace Qvickly\Api\Payment\DataObjects;
 
 use Qvickly\Api\Payment\Interfaces\DataObjectInterface;
+use Qvickly\Api\Structure\Validator;
 
+#[
+    StructureProperty(name: 'credentials', type: 'Credentials', required: true),
+    StructureProperty(name: 'data',        type: 'Data'       , required: true),
+    StructureProperty(name: 'function',    type: 'string'     , required: true),
+]
 class Payload implements DataObjectInterface
 {
     private array $payload = [];
@@ -42,12 +48,18 @@ class Payload implements DataObjectInterface
         };
     }
 
-    public function export(): array
+    public function export(bool $convertToExportFormat = false): array
     {
         return [
-            'credentials' => $this->payload['credentials']?->export() ?? '',
-            'data' => $this->payload['data']?->export() ?? '',
+            'credentials' => $this->payload['credentials']?->export($convertToExportFormat) ?? '',
+            'data' => $this->payload['data']?->export($convertToExportFormat) ?? '',
             'function' => $this->function ?? ''
         ];
+    }
+
+    public function validate(): bool
+    {
+        $validator = new Validator();
+        return $validator->validate($this->payload, $this::class);
     }
 }

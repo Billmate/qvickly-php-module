@@ -6,18 +6,18 @@ namespace Qvickly\Api\Payment\DataObjects;
 use Qvickly\Api\Payment\Interfaces\DataObjectInterface;
 use Qvickly\Api\Structure\Validator;
 
-class DataObject implements DataObjectInterface, \ArrayAccess, \Countable
+abstract class DataObject implements DataObjectInterface, \ArrayAccess, \Countable
 {
     protected array $data = [];
     public function __construct(array $data = [])
     {
         foreach($data as $key => $value) {
             if(is_array($value)) {
-                $className = "Qvickly\\Api\\Payment\\DataObjects\\" . $key;
+                $className = __NAMESPACE__ . $key;
                 if(class_exists($className)) {
                     $this->data[$key] = new $className($value);
                 } else {
-                    $this->data[$key] = new DataObject($value);
+                    $this->data[$key] = new Data($value);
                 }
             } else {
                 $this->data[$key] = $value;
@@ -45,7 +45,12 @@ class DataObject implements DataObjectInterface, \ArrayAccess, \Countable
         if(is_array($value) && count($value) > 0) {
             foreach ($value as $key => $val) {
                 if (is_array($val)) {
-                    $value[$key] = new DataObject($val);
+                    $className = __NAMESPACE__ . $key;
+                    if(class_exists($className)) {
+                        $value[$key] = new $className($value);
+                    } else {
+                        $value[$key] = new Data($value);
+                    }
                 }
             }
         }
@@ -56,9 +61,12 @@ class DataObject implements DataObjectInterface, \ArrayAccess, \Countable
         }
     }
 
-    public function validate(): bool
+    public function validate(array|null $data = null): bool
     {
         $validator = new Validator();
+        if($data !== null) {
+            return $validator->validate($data, static::class);
+        }
         return $validator->validate($this->data, static::class);
     }
 
@@ -68,20 +76,39 @@ class DataObject implements DataObjectInterface, \ArrayAccess, \Countable
         $validator->setDefaultValues($this->data, static::class);
     }
 
-    public function export(): array|string
+    public function export(bool $convertToExportFormat = false): array|string
     {
-        return $this->subExport($this->data);
+        return $this->subExport($this->data, $convertToExportFormat);
     }
 
-    protected function subExport(mixed $data): mixed
+    protected function subExport(mixed $data, bool $convertToExportFormat): mixed
     {
         if(is_array($data) && count($data) > 0) {
+            if($convertToExportFormat) {
+                $reflectionClass = new \ReflectionClass(static::class);
+                $attributes = $reflectionClass->getAttributes();
+                if(is_array($attributes)) {
+                    foreach ($attributes as $attribute) {
+                        $definition = $attribute->getArguments();
+                        if(array_key_exists('exportAs', $definition) && array_key_exists($definition['name'], $data)) {
+                            $data[$definition['name']] = match($definition['exportAs']) {
+                                'string' => (string) $data[$definition['name']],
+                                'int' => (int) $data[$definition['name']],
+                                'float' => (float) $data[$definition['name']],
+                                'bool' => (bool) $data[$definition['name']],
+                                'boolstr' => $data[$definition['name']] ? 'true' : 'false',
+                                'boolnum' => $data[$definition['name']] ? '1' : '0',
+                            };
+                        }
+                    }
+                }
+            }
             $export = [];
             foreach ($data as $key => $value) {
                 if($value instanceof DataObject) {
                     $export[$key] = $value->export();
                 } else {
-                    $export[$key] = $this->subExport($value);
+                    $export[$key] = $this->subExport($value, $convertToExportFormat);
                 }
             }
             return $export;

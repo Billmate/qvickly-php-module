@@ -4,16 +4,16 @@ declare(strict_types=1);
 namespace Qvickly\Api\Payment\DataObjects;
 
 #[
-    StructureProperty(['name'=>'method', 'type'=>'int', 'required'=>false, 'default' => 0]),
-    StructureProperty(['name'=>'currency', 'type'=>'string', 'required'=>false, 'default' => 'SEK']),
-    StructureProperty(['name'=>'language', 'type'=>'string', 'required'=>false, 'default' => 'sv']),
-    StructureProperty(['name'=>'country', 'type'=>'string', 'required'=>false, 'default' => 'SE']),
-    StructureProperty(['name'=>'orderid', 'type'=>'string', 'required'=>false, 'default' => '']),
-    StructureProperty(['name'=>'bankid', 'type'=>'bool', 'required'=>false, 'default' => false]),
-    StructureProperty(['name'=>'accepturl', 'type'=>'string', 'required'=>false, 'default' => '']),
-    StructureProperty(['name'=>'cancelurl', 'type'=>'string', 'required'=>false, 'default' => '']),
-    StructureProperty(['name'=>'callbackurl', 'type'=>'string', 'required'=>false, 'default' => '']),
-    StructureProperty(['name'=>'autocancel', 'type'=>'int', 'required'=>false, 'default' => 0]),
+    StructureProperty(['name'=>'email',     'type'=>'string', 'required'=>true]),
+    StructureProperty(['name'=>'firstname', 'type'=>'string'                  ]),
+    StructureProperty(['name'=>'lastname',  'type'=>'string'                  ]),
+    StructureProperty(['name'=>'company',   'type'=>'string'                  ]),
+    StructureProperty(['name'=>'zip',       'type'=>'string'                  ]),
+    StructureProperty(['name'=>'city',      'type'=>'string'                  ]),
+    StructureProperty(['name'=>'phone',     'type'=>'string'                  ]),
+    StructureProperty(['name'=>'country',   'type'=>'string'                  ]),
+    StructureProperty(['name'=>'street',    'type'=>'string'                  ]),
+    StructureProperty(['name'=>'street2',   'type'=>'string'                  ]),
 ]
 class BillingAddress extends DataObject
 {

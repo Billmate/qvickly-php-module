@@ -53,6 +53,12 @@ class PaymentAPI
     const QVICKLY_API_BASE_URL = 'https://api.qvickly.io/';
     private Client $client;
 
+    /**
+     * @param string $eid
+     * @param string $secret
+     * @param bool $testMode
+     * @param bool $onlyReturnData
+     */
     public function __construct(private readonly string $eid, private readonly string $secret, private readonly bool $testMode = false, private bool $onlyReturnData = true)
     {
         $this->client = new Client([

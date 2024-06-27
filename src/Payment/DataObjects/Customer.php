@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace Qvickly\Api\Payment\DataObjects;
 
-
+#[
+    StructureProperty(name: 'nr',  type: 'int',    exportAs: 'string'),
+    StructureProperty(name: 'pno', type: 'string', exportAs: 'string'),
+]
 class Customer extends DataObject
 {
     protected BillingAddress $billingAddress;
@@ -18,7 +21,7 @@ class Customer extends DataObject
                 } elseif($data['Billing'] instanceof BillingAddress) {
                     $this->billingAddress = $data['Billing'];
                 }
-                unset($data['billing']);
+                unset($data['Billing']);
             }
             if($data['Shipping']) {
                 if(is_array($data['Shipping'])) {
@@ -32,7 +35,17 @@ class Customer extends DataObject
         parent::__construct($data);
     }
 
-    public function export(): array
+    public function __get(int|string $name)
+    {
+        if($name === 'Billing') {
+            return $this->billingAddress;
+        } elseif($name === 'Shipping') {
+            return $this->shippingAddress;
+        }
+        return parent::__get($name);
+    }
+
+    public function export(bool $convertToExportFormat = false): array
     {
         $export = parent::export();
         if(isset($this->billingAddress) && $this->billingAddress instanceof BillingAddress){

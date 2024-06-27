@@ -8,7 +8,7 @@ class Data extends DataObject
 {
     public function __construct(array|null $data = null)
     {
-        parent::__construct($data);
+        parent::__construct($data ?? []);
     }
 
     public function hash(string $secret)
@@ -23,15 +23,12 @@ class Data extends DataObject
         }
         if(!array_key_exists('Articles', $this->data)) {
             $this->data['Articles'] = new Articles();
-            $this->data['Articles'][] = $article;
         } else {
             if(!$this->data['Articles'] instanceof Articles) {
-                $this->data['Articles'][] = $article;
-            } else {
                 $this->data['Articles'] = new Articles($this->data['Articles']);
-                $this->data['Articles'][] = $article;
             }
         }
+        $this->data['Articles'][] = $article;
     }
 
     public function updateCart()

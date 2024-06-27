@@ -1,5 +1,11 @@
 # Changelog for - Qvickly PHP Module
 
+## 2024-06-27
+* Added coverage tests for PaymentAPI.
+* Adjusted code to work better based on the tests.
+* Added more testing for PaymentAPI.
+* Added more StructureParameter to PaymentAPI DataObject classes.
+
 ## 2024-06-26
 * Added the last of the 26 examples for PaymentAPI.
 * Extended DataObject functionality in PaymentAPI.
