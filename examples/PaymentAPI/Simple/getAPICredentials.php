@@ -5,7 +5,7 @@ require '../../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../QvicklyModule');
 $dotenv->load();
 
 use Qvickly\Api\Payment\PaymentAPI;
@@ -14,8 +14,9 @@ use Qvickly\Api\Payment\DataObjects\Data;
 $paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
 $data = new Data(
     [
-        "orgnum" => "5501011018",
+        "hash" => "123456abc123456abc123456abc12345",
+        "eid" => "23456",
     ]
 );
-$parties = $paymentAPI->crediflowSearchParty($data);
-print_r($parties);
+$credentials = $paymentAPI->getAPICredentials($data);
+print_r($credentials);

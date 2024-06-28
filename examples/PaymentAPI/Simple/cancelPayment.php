@@ -5,7 +5,7 @@ require '../../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../QvicklyModule');
 $dotenv->load();
 
 use Qvickly\Api\Payment\PaymentAPI;
@@ -17,5 +17,5 @@ $data = new Data(
         "number" => "12345"
     ]
 );
-$payment = $paymentAPI->activatePayment($data);
+$payment = $paymentAPI->cancelPayment($data);
 print_r($payment);

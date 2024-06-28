@@ -12,7 +12,7 @@ class Customer extends DataObject
     protected BillingAddress $billingAddress;
     protected ShippingAddress $shippingAddress;
 
-    public function __construct(array|null $data)
+    public function __construct(array $data = [])
     {
         if(is_array($data)) {
             if($data['Billing']) {
@@ -47,12 +47,12 @@ class Customer extends DataObject
 
     public function export(bool $convertToExportFormat = false): array
     {
-        $export = parent::export();
+        $export = parent::export($convertToExportFormat);
         if(isset($this->billingAddress) && $this->billingAddress instanceof BillingAddress){
-            $export['Billing'] = $this->billingAddress->export();
+            $export['Billing'] = $this->billingAddress->export($convertToExportFormat);
         }
         if (isset($this->shippingAddress) && $this->shippingAddress instanceof ShippingAddress) {
-            $export['Shipping'] = $this->shippingAddress->export();
+            $export['Shipping'] = $this->shippingAddress->export($convertToExportFormat);
         }
         return $export;
     }

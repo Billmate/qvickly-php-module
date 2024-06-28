@@ -83,7 +83,7 @@ class PaymentAPI
         ];
         $credentials = new Credentials([
             'id' => $this->eid,
-            'hash' => $data->hash($this->secret),
+            'hash' => $data->hash($this->secret, true),
             'version' => '2.5.0',
             'client' => 'qvickly-php-sdk',
             'language' => 'sv',
@@ -95,7 +95,7 @@ class PaymentAPI
             'data' => $data,
             'function' => $name,
         ]);
-        $sendBody = json_encode($payload->export());
+        $sendBody = json_encode($payload->export(true));
         $request = new Request(HttpMethod::POST->value, $url, $headers, $sendBody);
         try {
             $response = $this->client->send($request);

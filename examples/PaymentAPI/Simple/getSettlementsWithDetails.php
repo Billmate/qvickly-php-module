@@ -5,7 +5,7 @@ require '../../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../QvicklyModule');
 $dotenv->load();
 
 use Qvickly\Api\Payment\PaymentAPI;
@@ -14,8 +14,8 @@ use Qvickly\Api\Payment\DataObjects\Data;
 $paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
 $data = new Data(
     [
-        "name" => "tess"
+        "settlementId" => "1"
     ]
 );
-$customers = $paymentAPI->getCustomersByName($data);
-print_r($customers);
+$settlement = $paymentAPI->getSettlementsWithDetails($data);
+print_r($settlement);

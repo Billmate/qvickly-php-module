@@ -11,12 +11,12 @@ class Data extends DataObject
         parent::__construct($data ?? []);
     }
 
-    public function hash(string $secret)
+    public function hash(string $secret, bool $convertToExportFormat = false): string
     {
-        return hash_hmac('sha512', json_encode($this->export()), $secret);
+        return hash_hmac('sha512', json_encode($this->export($convertToExportFormat)), $secret);
     }
 
-    public function addArticle(array|Article $article)
+    public function addArticle(array|Article $article): static
     {
         if(is_array($article)) {
             $article = new Article($article);
@@ -29,9 +29,10 @@ class Data extends DataObject
             }
         }
         $this->data['Articles'][] = $article;
+        return $this;
     }
 
-    public function updateCart()
+    public function updateCart(): static
     {
         if(array_key_exists('Articles', $this->data)) {
             if(!array_key_exists('Cart', $this->data)) {
@@ -46,5 +47,6 @@ class Data extends DataObject
 
             $this->data['Cart']->updateTotals($withouttax, $tax, $withtax);
         }
+        return $this;
     }
 }

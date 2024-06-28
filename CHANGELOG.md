@@ -1,5 +1,8 @@
 # Changelog for - Qvickly PHP Module
 
+## 2024-06-28
+* Moved examples for PaymentAPI to a new location since they are identical to the ones found in the documentation. Now leaving room for a better structure.
+
 ## 2024-06-27
 * Added coverage tests for PaymentAPI.
 * Adjusted code to work better based on the tests.

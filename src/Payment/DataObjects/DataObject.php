@@ -106,7 +106,7 @@ abstract class DataObject implements DataObjectInterface, \ArrayAccess, \Countab
             $export = [];
             foreach ($data as $key => $value) {
                 if($value instanceof DataObject) {
-                    $export[$key] = $value->export();
+                    $export[$key] = $value->export($convertToExportFormat);
                 } else {
                     $export[$key] = $this->subExport($value, $convertToExportFormat);
                 }

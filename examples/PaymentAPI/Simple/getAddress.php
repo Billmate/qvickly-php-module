@@ -5,7 +5,7 @@ require '../../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../..');
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../QvicklyModule');
 $dotenv->load();
 
 use Qvickly\Api\Payment\PaymentAPI;
@@ -14,9 +14,9 @@ use Qvickly\Api\Payment\DataObjects\Data;
 $paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
 $data = new Data(
     [
-        "currency" => "USD",
-        "date" => "2024-04-30"
+        "pno" => "550101-1018",
+        "country" => "SE"
     ]
 );
-$rate = $paymentAPI->getExchangeRate($data);
-print_r($rate);
+$address = $paymentAPI->getAddress($data);
+print_r($address);
