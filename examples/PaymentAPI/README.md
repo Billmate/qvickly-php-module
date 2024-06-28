@@ -1,6 +1,7 @@
 # Qvickly Payment API - Examples
 
-This folder contains examples for the Qvickly Payment API.
+## Simple examples
+This folder contains examples for the Qvickly Payment API. These examples are the same as the ones found in the documentation.
 - [x] [getAddress](Simple/getAddress.php)
 - [x] [addPayment](Simple/addPayment.php)
 - [x] [activatePayment](Simple/activatePayment.php)

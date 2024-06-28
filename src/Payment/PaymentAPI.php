@@ -15,6 +15,7 @@ use Qvickly\Api\Payment\DataObjects\Data;
 
 use Qvickly\Api\Payment\DataObjects\Payload;
 
+use Qvickly\Api\Payment\Exception\PaymentAPIException;
 use stdClass;
 
 use function PHPUnit\Framework\throwException;
@@ -58,8 +59,9 @@ class PaymentAPI
      * @param string $secret
      * @param bool $testMode
      * @param bool $onlyReturnData
+     * @param bool $debugMode
      */
-    public function __construct(private readonly string $eid, private readonly string $secret, private readonly bool $testMode = false, private bool $onlyReturnData = true)
+    public function __construct(private readonly string $eid, private readonly string $secret, private readonly bool $testMode = false, private bool $onlyReturnData = true, private bool $debugMode = false)
     {
         $this->client = new Client([
             'base_uri' => self::QVICKLY_API_BASE_URL
@@ -96,6 +98,9 @@ class PaymentAPI
             'function' => $name,
         ]);
         $sendBody = json_encode($payload->export(true));
+        if($this->debugMode) {
+            var_dump($sendBody);
+        }
         $request = new Request(HttpMethod::POST->value, $url, $headers, $sendBody);
         try {
             $response = $this->client->send($request);
@@ -106,25 +111,34 @@ class PaymentAPI
                     return $body;
                 }
                 if(isset($json->credentials?->hash) && $json->credentials->hash !== static::generateHash($this->secret, json_encode($json->data))) {
-                    throwException(new Exception('Invalid hash'));
+                    throwException(new PaymentAPIException('Invalid hash'));
                 }
                 if($this->onlyReturnData && isset($json->data)) {
                     return $json->data;
                 }
                 return $json;
             } catch (Exception $e) {
-                print("JSON Exception ");
-                print_r($e->getMessage());
+                if($this->debugMode) {
+                    throw $e;
+                } elseif($e instanceof PaymentAPIException) {
+                    throw $e;
+                }
             }
-        } catch (GuzzleException $e) {
-            print("GuzzleException ");
-            print_r($e->getMessage());
+        } catch (Exception $e) {
+            if($this->debugMode) {
+                throw $e;
+            } elseif($e instanceof PaymentAPIException) {
+                throw $e;
+            }
         }
         return new stdClass();
     }
 
-    public function __invoke()
+    /**
+     * @throws Exception
+     */
+    public function __invoke(string $name, Data|array|null $arguments): string|array|stdClass
     {
-        // TODO: Implement __invoke() method.
+        return $this->__call($name, $arguments);
     }
 }
