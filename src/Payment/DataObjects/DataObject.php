@@ -9,11 +9,11 @@ use Qvickly\Api\Structure\Validator;
 abstract class DataObject implements DataObjectInterface, \ArrayAccess, \Countable
 {
     protected array $data = [];
-    public function __construct(array $data = [])
+    public function __construct(\stdClass|array $data = [])
     {
         foreach($data as $key => $value) {
             if(is_array($value)) {
-                $className = __NAMESPACE__ . $key;
+                $className = __NAMESPACE__ . "\\" . $key;
                 if(class_exists($className)) {
                     $this->data[$key] = new $className($value);
                 } else {
@@ -45,7 +45,7 @@ abstract class DataObject implements DataObjectInterface, \ArrayAccess, \Countab
         if(is_array($value) && count($value) > 0) {
             foreach ($value as $key => $val) {
                 if (is_array($val)) {
-                    $className = __NAMESPACE__ . $key;
+                    $className = __NAMESPACE__ . "\\" .  $key;
                     if(class_exists($className)) {
                         $value[$key] = new $className($value);
                     } else {

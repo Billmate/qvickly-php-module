@@ -67,7 +67,7 @@ class Cart extends DataObject
         return parent::validate($validateData);
     }
 
-    public function updateTotals(int $withouttax, int $tax, int $withtax, int|null $rounding = null): void
+    public function updateTotals(int $withouttax, int $tax, int $withtax, int|null|bool $rounding = null): void
     {
         if(!isset($this->Total)) {
             $this->Total = new CartTotal();
@@ -90,8 +90,14 @@ class Cart extends DataObject
         $this->Total->withouttax += $withouttax;
         $this->Total->tax += $tax;
         $this->Total->withtax += $withtax;
-        if($rounding !== null) {
+        if($rounding === true) {
+            $this->Total->withtax = (int)(round($this->Total->withtax / 100 + 0.01, 0) * 100);
+            $this->Total->rounding = $this->Total->withtax - $this->Total->tax - $this->Total->withouttax;
+        } elseif($rounding === false) {
+            $this->Total->rounding = 0;
+        } elseif($rounding !== null) {
             $this->Total->rounding += $rounding;
+            $this->Total->withtax += $rounding;
         }
     }
 

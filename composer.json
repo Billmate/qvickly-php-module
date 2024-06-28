@@ -6,7 +6,10 @@
     "autoload": {
         "psr-4": {
             "Qvickly\\Api\\": "src/"
-        }
+        },
+        "files": [
+            "src/Payment/Helpers/Payments.php"
+        ]
     },
     "authors": [
         {

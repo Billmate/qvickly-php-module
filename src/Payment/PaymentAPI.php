@@ -15,6 +15,7 @@ use Qvickly\Api\Payment\DataObjects\Data;
 
 use Qvickly\Api\Payment\DataObjects\Payload;
 
+use Qvickly\Api\Payment\DataObjects\ReturnData;
 use Qvickly\Api\Payment\Exception\PaymentAPIException;
 use stdClass;
 
@@ -55,11 +56,11 @@ class PaymentAPI
     private Client $client;
 
     /**
-     * @param string $eid
-     * @param string $secret
-     * @param bool $testMode
-     * @param bool $onlyReturnData
-     * @param bool $debugMode
+     * @param string $eid Qvickly identification numer
+     * @param string $secret Qvickly secret
+     * @param bool $testMode Send flag to indicate test mode
+     * @param bool $onlyReturnData Only return data from API
+     * @param bool $debugMode Debug mode
      */
     public function __construct(private readonly string $eid, private readonly string $secret, private readonly bool $testMode = false, private bool $onlyReturnData = true, private bool $debugMode = false)
     {
@@ -68,11 +69,25 @@ class PaymentAPI
         ]);
     }
 
+    /**
+     * Generate hash for credentials data and verification of data
+     * @param string $secret
+     * @param string $data
+     * @return string
+     */
     private static function generateHash(string $secret, string $data): string
     {
         return hash_hmac('sha512', $data, $secret);
     }
-    public function __call(string $name, Data|array|null $arguments): string|array|stdClass
+
+    /**
+     * @param string $name
+     * @param Data|array|null $arguments
+     * @return stdClass|Payload|Data|array|string
+     * @throws GuzzleException
+     * @throws PaymentAPIException
+     */
+    public function __call(string $name, Data|array|null $arguments): stdClass|Payload|Data|array|string
     {
         $arguments = $arguments ?? [];
         $data = $arguments[0] ?? [];
@@ -90,7 +105,7 @@ class PaymentAPI
             'client' => 'qvickly-php-sdk',
             'language' => 'sv',
             'time' => time(),
-            'testMode' => $this->testMode ? 'true' : 'false',
+            'test' => $this->testMode ? 'true' : 'false',
         ]);
         $payload = new Payload([
             'credentials' => $credentials,
@@ -135,9 +150,12 @@ class PaymentAPI
     }
 
     /**
+     * @param string $name Name of the function to call
+     * @param mixed ...$arguments Arguments to pass to the function
+     * @return string|array|stdClass
      * @throws Exception
      */
-    public function __invoke(string $name, Data|array|null $arguments): string|array|stdClass
+    public function __invoke(string $name, ...$arguments): stdClass|Payload|Data|ReturnData|array|string
     {
         return $this->__call($name, $arguments);
     }

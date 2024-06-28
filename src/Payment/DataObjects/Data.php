@@ -6,7 +6,7 @@ namespace Qvickly\Api\Payment\DataObjects;
 
 class Data extends DataObject
 {
-    public function __construct(array|null $data = null)
+    public function __construct(\stdClass|array|null $data = null)
     {
         parent::__construct($data ?? []);
     }
@@ -32,7 +32,7 @@ class Data extends DataObject
         return $this;
     }
 
-    public function updateCart(): static
+    public function updateCart(bool $roundCart = false): static
     {
         if(array_key_exists('Articles', $this->data)) {
             if(!array_key_exists('Cart', $this->data)) {
@@ -41,11 +41,10 @@ class Data extends DataObject
                 $this->data['Cart'] = new Cart($this->data['Cart']);
             }
             $total = $this->data['Articles']->getTotal();
-            $withouttax = $total['withouttax'];
-            $tax = $total['tax'];
-            $withtax = $total['withtax'];
-
-            $this->data['Cart']->updateTotals($withouttax, $tax, $withtax);
+            $withouttax = (int)round($total['withouttax'] + 0.01, 0);
+            $tax = (int)round($total['tax'] + 0.01, 0);
+            $withtax = (int)round($total['withtax'] + 0.01, 0);
+            $this->data['Cart']->updateTotals($withouttax, $tax, $withtax, $roundCart);
         }
         return $this;
     }
