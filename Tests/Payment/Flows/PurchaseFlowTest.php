@@ -23,9 +23,7 @@ class PurchaseFlowTest extends TestCase
         $paymentData = examplePayment(2, "thomas.bjork@qvickly.io");
         $paymentData->updateCart(true);
         $payment = $api("addPayment", $paymentData);
-        $orderRef = $payment->number;
-        var_dump($payment);
-        echo "Looking out for orderRef: $orderRef\n";
+        $orderRef = $payment['number'];
         $this->assertIsNumeric($orderRef);
     }
 

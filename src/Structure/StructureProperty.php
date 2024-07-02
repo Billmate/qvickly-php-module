@@ -5,7 +5,24 @@ namespace Qvickly\Api\Structure;
 #[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_CLASS)]
 class StructureProperty
 {
-    public function __construct(string $name, string $type, bool $required = false, string $default = null, string $exportAs = null, string $precision = null, array $values = [])
+    /**
+     * @param string $name
+     * @param string $type
+     * @param bool $required
+     * @param string|null $default
+     * @param string|null $exportAs
+     * @param string|null $precision
+     * @param array $values
+     */
+    public function __construct(
+        private string $name,
+        private string $type,
+        private bool $required = false,
+        private string|null $default = null,
+        private string|null $exportAs = null,
+        private string|null $precision = null,
+        private array $values = []
+    )
     {
     }
 }

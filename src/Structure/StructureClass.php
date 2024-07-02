@@ -5,7 +5,14 @@ namespace Qvickly\Api\Structure;
 #[\Attribute(\Attribute::IS_REPEATABLE | \Attribute::TARGET_CLASS)]
 class StructureClass
 {
-    public function __construct(string $function, string $class)
+    /**
+     * @param string $function
+     * @param string $class
+     */
+    public function __construct(
+        private string $function,
+        private string $class
+    )
     {
     }
 }

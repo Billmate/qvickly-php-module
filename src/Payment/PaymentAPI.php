@@ -39,8 +39,8 @@ if(!defined('QVICKLY_PAYMENTAPI_CLIENT_NAME')) {
  * Class PaymentAPI
  * @package Qvickly\Api\Payment
  * @method array getAddress()
- * @method array addPayment()
- * @method array activatePayment()
+ * @method array addPayment(array|Data $data)
+ * @method array activatePayment(array|Data $data)
  * @method array updatePayment()
  * @method array cancelPayment()
  * @method array creditPayment()
@@ -87,7 +87,7 @@ class PaymentAPI
     )
     {
         $this->client = new Client([
-            'base_uri' => QVICKLY_PAYMENTAPI_BASE_URL
+            'base_uri' => $this->overrides['BASE_URL'] ?? QVICKLY_PAYMENTAPI_BASE_URL
         ]);
     }
 
@@ -116,7 +116,7 @@ class PaymentAPI
         if(is_array($data)) {
             $data = new Data($data);
         }
-        $url = QVICKLY_PAYMENTAPI_BASE_URL;
+        $url = $this->overrides['BASE_URL'] ?? QVICKLY_PAYMENTAPI_BASE_URL;
         $headers = [
             'Content-Type' => 'application/json',
         ];

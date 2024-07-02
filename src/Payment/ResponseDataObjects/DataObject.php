@@ -46,6 +46,11 @@ abstract class DataObject implements DataObjectInterface, \ArrayAccess, \Countab
             $class = __NAMESPACE__ . "\\" . 'Error';
             return new $class($data);
         }
+        // Check if we have credentials and data in the response
+        if((is_array($data) || $data instanceof \stdClass) && array_key_exists('credentials', (array)$data) && array_key_exists('data', (array)$data)) {
+            $class = __NAMESPACE__ . "\\" . 'Payload';
+            return $class::Parse($data);
+        }
         // If not, we check if this is a registered function that might help us along the way
         $class = __NAMESPACE__ . "\\" . 'Data';
         if($function !== '') {

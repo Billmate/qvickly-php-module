@@ -14,6 +14,5 @@ class CustomerTest extends TestCase
         $customer->nr = 12;
         $customer->pno = '550108-1018';
         $this->assertTrue($customer->validate());
-        var_dump($customer->export(true));
     }
 }

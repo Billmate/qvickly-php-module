@@ -30,11 +30,11 @@ class PaymentAPITest extends TestCase
     {
         $api = new Payment\PaymentAPI($_ENV['EID'], $_ENV['SECRET'], onlyReturnData: false);
         $response = $api->getAddress([ "pno" => "550101-1018", "country" => "SE" ]);
-        $this->assertIsObject($response);
-        $this->assertObjectHasProperty('data', $response);
-        $this->assertObjectHasProperty('firstname', $response->data);
-        $this->assertIsString($response->data->firstname);
-        $this->assertEquals('Testperson', $response->data->firstname);
+        $this->assertIsArray($response);
+        $this->assertArrayHasKey('data', $response);
+        $this->assertArrayHasKey('firstname', $response['data']);
+        $this->assertIsString($response['data']['firstname']);
+        $this->assertEquals('Testperson', $response['data']['firstname']);
     }
 
     public function testGetAddressDataResponse()

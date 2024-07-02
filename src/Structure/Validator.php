@@ -15,6 +15,12 @@ class Validator
 
     }
 
+    /**
+     * @param $data
+     * @param $class
+     * @return bool
+     * @throws \ReflectionException
+     */
     public function validate($data, $class): bool
     {
         $reflectionClass = new ReflectionClass($class);
@@ -34,6 +40,12 @@ class Validator
         return $validates;
     }
 
+    /**
+     * @param $data
+     * @param $class
+     * @return void
+     * @throws \ReflectionException
+     */
     public function setDefaultValues(&$data, $class):void
     {
         $reflectionClass = new ReflectionClass($class);
