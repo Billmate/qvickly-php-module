@@ -1,7 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Qvickly\Api\Payment\DataObjects;
+namespace Qvickly\Api\Payment\RequestDataObjects;
+
+use Qvickly\Api\Structure\StructureProperty;
 
 #[
     StructureProperty(name: 'nr',  type: 'int',    exportAs: 'string'),

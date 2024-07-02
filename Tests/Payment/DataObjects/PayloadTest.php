@@ -2,9 +2,9 @@
 
 namespace Payment\DataObjects;
 
-use Qvickly\Api\Payment\DataObjects\Credentials;
-use Qvickly\Api\Payment\DataObjects\Data;
-use Qvickly\Api\Payment\DataObjects\Payload;
+use Qvickly\Api\Payment\RequestDataObjects\Credentials;
+use Qvickly\Api\Payment\RequestDataObjects\Data;
+use Qvickly\Api\Payment\RequestDataObjects\Payload;
 use PHPUnit\Framework\TestCase;
 
 class PayloadTest extends TestCase

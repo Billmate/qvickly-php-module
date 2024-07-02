@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Qvickly\Api\Payment\DataObjects;
+namespace Qvickly\Api\Payment\RequestDataObjects;
 
 use Qvickly\Api\Payment\Interfaces\DataObjectInterface;
+use Qvickly\Api\Structure\StructureProperty;
 use Qvickly\Api\Structure\Validator;
 
 #[

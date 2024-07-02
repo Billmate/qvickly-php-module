@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Qvickly\Api\Structure;
 
-use Qvickly\Api\Payment\DataObjects\DataObject;
+use Qvickly\Api\Payment\RequestDataObjects\DataObject;
 use ReflectionClass;
 
 class Validator

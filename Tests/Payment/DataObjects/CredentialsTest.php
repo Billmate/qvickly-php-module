@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Payment\DataObjects;
 
-use Qvickly\Api\Payment\DataObjects\Credentials;
+use Qvickly\Api\Payment\RequestDataObjects\Credentials;
 use PHPUnit\Framework\TestCase;
 
 class CredentialsTest extends TestCase

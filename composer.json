@@ -8,7 +8,8 @@
             "Qvickly\\Api\\": "src/"
         },
         "files": [
-            "src/Payment/Helpers/Payments.php"
+            "src/Payment/Helpers/Payments.php",
+            "src/Payment/Helpers/Bools.php"
         ]
     },
     "authors": [

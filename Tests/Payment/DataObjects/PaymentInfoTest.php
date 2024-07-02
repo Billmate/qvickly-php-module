@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Payment\DataObjects;
 
 use PHPUnit\Framework\TestCase;
-use Qvickly\Api\Payment\DataObjects\PaymentInfo;
+use Qvickly\Api\Payment\RequestDataObjects\PaymentInfo;
 
 class PaymentInfoTest extends TestCase
 {

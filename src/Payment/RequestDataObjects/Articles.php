@@ -1,6 +1,6 @@
 <?php
 
-namespace Qvickly\Api\Payment\DataObjects;
+namespace Qvickly\Api\Payment\RequestDataObjects;
 
 class Articles extends DataObject
 {

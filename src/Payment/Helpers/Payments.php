@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Qvickly\Api\Payment\Helpers;
 
-use Qvickly\Api\Payment\DataObjects\Data;
+use Qvickly\Api\Payment\RequestDataObjects\Data;
 
 /**
  * @param int $method

@@ -9,7 +9,7 @@ $dotenv = Dotenv::createImmutable(__DIR__ . '/../../..');
 $dotenv->load();
 
 use Qvickly\Api\Payment\PaymentAPI;
-use Qvickly\Api\Payment\DataObjects\Data;
+use Qvickly\Api\Payment\RequestDataObjects\Data;
 
 $paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
 $payments = $paymentAPI->getDuePayments();

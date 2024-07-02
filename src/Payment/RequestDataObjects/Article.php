@@ -1,10 +1,12 @@
 <?php
 
-namespace Qvickly\Api\Payment\DataObjects;
+namespace Qvickly\Api\Payment\RequestDataObjects;
+
+use Qvickly\Api\Structure\StructureProperty;
 
 #[
-    StructureProperty(name: 'taxrate',    type: 'decimal', exportAs: 'string', required: true),
-    StructureProperty(name: 'withouttax', type: 'decimal', exportAs: 'string', required: true),
+    StructureProperty(name: 'taxrate',    type: 'decimal', required: true, exportAs: 'string'),
+    StructureProperty(name: 'withouttax', type: 'decimal', required: true, exportAs: 'string'),
     StructureProperty(name: 'artnr',      type: 'string'),
     StructureProperty(name: 'title',      type: 'string',                      required: true),
     StructureProperty(name: 'quantity',   type: 'decimal', exportAs: 'string'),

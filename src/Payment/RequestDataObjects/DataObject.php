@@ -1,10 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Qvickly\Api\Payment\DataObjects;
+namespace Qvickly\Api\Payment\RequestDataObjects;
 
 use Qvickly\Api\Payment\Interfaces\DataObjectInterface;
 use Qvickly\Api\Structure\Validator;
+
+use function Qvickly\Api\Payment\Helpers\getBoolValue;
 
 abstract class DataObject implements DataObjectInterface, \ArrayAccess, \Countable
 {
@@ -96,8 +98,8 @@ abstract class DataObject implements DataObjectInterface, \ArrayAccess, \Countab
                                 'int' => (int) $data[$definition['name']],
                                 'float' => (float) $data[$definition['name']],
                                 'bool' => (bool) $data[$definition['name']],
-                                'boolstr' => $data[$definition['name']] ? 'true' : 'false',
-                                'boolnum' => $data[$definition['name']] ? '1' : '0',
+                                'boolstr' => getBoolValue($data[$definition['name']]) ? 'true' : 'false',
+                                'boolnum' => getBoolValue($data[$definition['name']]) ? '1' : '0',
                             };
                         }
                     }

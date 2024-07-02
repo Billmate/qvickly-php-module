@@ -2,7 +2,7 @@
 
 namespace Payment\DataObjects;
 
-use Qvickly\Api\Payment\DataObjects\Customer;
+use Qvickly\Api\Payment\RequestDataObjects\Customer;
 use PHPUnit\Framework\TestCase;
 
 class CustomerTest extends TestCase

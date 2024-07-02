@@ -8,11 +8,11 @@ use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(__DIR__ . '/../../..');
 $dotenv->load();
 
-use Qvickly\Api\Payment\DataObjects\Customer;
+use Qvickly\Api\Payment\RequestDataObjects\Customer;
 use Qvickly\Api\Payment\PaymentAPI;
-use Qvickly\Api\Payment\DataObjects\Data;
-use \Qvickly\Api\Payment\DataObjects\PaymentData;
-use \Qvickly\Api\Payment\DataObjects\BillingAddress;
+use Qvickly\Api\Payment\RequestDataObjects\Data;
+use \Qvickly\Api\Payment\RequestDataObjects\PaymentData;
+use \Qvickly\Api\Payment\RequestDataObjects\BillingAddress;
 
 $paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET'], testMode: true);
 $paymentData = new PaymentData(

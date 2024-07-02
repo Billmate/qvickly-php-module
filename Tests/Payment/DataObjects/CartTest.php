@@ -2,7 +2,7 @@
 
 namespace Payment\DataObjects;
 
-use Qvickly\Api\Payment\DataObjects\Cart;
+use Qvickly\Api\Payment\RequestDataObjects\Cart;
 use PHPUnit\Framework\TestCase;
 
 class CartTest extends TestCase

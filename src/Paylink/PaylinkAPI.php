@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Qvickly\Api\Paylink;
 
-use Qvickly\Api\Payment\DataObjects\Data;
+use Qvickly\Api\Payment\RequestDataObjects\Data;
 use Qvickly\Api\Payment\PaymentAPI;
 use stdClass;
 
