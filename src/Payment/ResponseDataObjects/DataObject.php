@@ -3,14 +3,18 @@
 namespace Qvickly\Api\Payment\ResponseDataObjects;
 
 use Qvickly\Api\Payment\Interfaces\DataObjectInterface;
-use Qvickly\Api\Payment\ResponseDataObjects\Data;
 use Qvickly\Api\Structure\StructureClass;
 use Qvickly\Api\Structure\Validator;
 
 use function Qvickly\Api\Payment\Helpers\getBoolValue;
 
 #[
-    StructureClass(function: 'getAddress', class: 'Address'),
+    StructureClass(function: 'getAddress',      class: 'Address'),
+    StructureClass(function: 'addPayment',      class: 'Payment'),
+    StructureClass(function: 'updatePayment',   class: 'Payment'),
+    StructureClass(function: 'activatePayment', class: 'Payment'),
+    StructureClass(function: 'creditPayment',   class: 'Payment'),
+    StructureClass(function: 'cancelPayment',   class: 'Payment'),
 ]
 abstract class DataObject implements DataObjectInterface, \ArrayAccess, \Countable
 {
@@ -90,7 +94,7 @@ abstract class DataObject implements DataObjectInterface, \ArrayAccess, \Countab
             $activeName = array_shift($parts);
             $name = implode(':', $parts);
             $data = $data[$activeName] ?? null;
-            if($data instanceof \Qvickly\Api\Payment\ResponseDataObjects\DataObject) {
+            if($data instanceof DataObject) {
                 return $data->{$name};
             }
         }

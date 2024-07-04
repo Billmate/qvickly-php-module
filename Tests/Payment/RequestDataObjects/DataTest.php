@@ -1,6 +1,6 @@
 <?php
 
-namespace Payment\DataObjects;
+namespace Payment\RequestDataObjects;
 
 use Qvickly\Api\Payment\RequestDataObjects\Data;
 use PHPUnit\Framework\TestCase;

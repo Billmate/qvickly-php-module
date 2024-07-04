@@ -32,15 +32,15 @@ class Data extends DataObject
         return $this;
     }
 
-    public function updateCart(bool $roundCart = false): static
+    public function updateCart(bool|null|int $roundCart = false, bool $addRoundingToTotal = false): static
     {
         if(array_key_exists('Articles', $this->data)) {
             if(!array_key_exists('Cart', $this->data)) {
                 $this->data['Cart'] = new Cart();
-            } elseif(is_array($this->data['Cart'])) {
+            } elseif(is_array($this->data['Cart']) || $this->data['Cart'] instanceof \stdClass) {
                 $this->data['Cart'] = new Cart($this->data['Cart']);
             }
-            $total = $this->data['Articles']->getTotal();
+            $total = $this->data['Articles']->getTotal($addRoundingToTotal);
             $withouttax = (int)round($total['withouttax'] + 0.01, 0);
             $tax = (int)round($total['tax'] + 0.01, 0);
             $withtax = (int)round($total['withtax'] + 0.01, 0);

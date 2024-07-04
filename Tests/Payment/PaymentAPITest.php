@@ -16,16 +16,18 @@ $dotenv->load();
 
 class PaymentAPITest extends TestCase
 {
-    public function testTrue()
-    {
-        $this->assertTrue(true);
-    }
-
     public function testObject()
     {
         $this->assertIsObject(new Payment\PaymentAPI($_ENV['EID'], $_ENV['SECRET']));
     }
 
+    public function testWithoutCredentials()
+    {
+        $api = new Payment\PaymentAPI("", "");
+        $response = $api->getAddress([ "pno" => "550101-1018", "country" => "SE" ]);
+        $this->assertArrayHasKey('code', $response);
+        $this->assertEquals(9011, $response['code']);
+    }
     public function testGetAddress()
     {
         $api = new Payment\PaymentAPI($_ENV['EID'], $_ENV['SECRET'], onlyReturnData: false);
@@ -43,5 +45,13 @@ class PaymentAPITest extends TestCase
         $response = $api->getAddress([ "pno" => "550101-1018", "country" => "SE" ]);
         $this->assertIsArray($response);
         $this->assertEquals('Testperson', $response['firstname']);
+    }
+
+    public function testGetAddressRawResponse()
+    {
+        $api = new Payment\PaymentAPI($_ENV['EID'], $_ENV['SECRET'], onlyReturnData: true, returnData: ReturnDataType::RAW);
+        $response = $api->getAddress([ "pno" => "550101-1018", "country" => "SE" ]);
+        $this->assertIsObject($response);
+        $this->assertEquals('Testperson', $response->firstname);
     }
 }
