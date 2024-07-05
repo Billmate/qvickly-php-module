@@ -11,11 +11,22 @@ class Data extends DataObject
         parent::__construct($data ?? []);
     }
 
+    /**
+     * Calculate the hash of the current data object.
+     * @param string $secret
+     * @param bool $convertToExportFormat
+     * @return string
+     */
     public function hash(string $secret, bool $convertToExportFormat = false): string
     {
         return hash_hmac('sha512', json_encode($this->export($convertToExportFormat)), $secret);
     }
 
+    /**
+     * Add an Article to the current data object. If the Articles object does not exist, create it.
+     * @param array|Article $article
+     * @return $this
+     */
     public function addArticle(array|Article $article): static
     {
         if(is_array($article)) {
@@ -32,7 +43,12 @@ class Data extends DataObject
         return $this;
     }
 
-    public function updateCart(bool|null|int $roundCart = false, bool $addRoundingToTotal = false): static
+    /**
+     * Check if the current data object has any Articles. If so, then update or create the Cart object with the new totals.
+     * @param bool|int|null $roundCart
+     * @return $this
+     */
+    public function updateCart(bool|null|int $roundCart = false): static
     {
         if(array_key_exists('Articles', $this->data)) {
             if(!array_key_exists('Cart', $this->data)) {
@@ -40,7 +56,7 @@ class Data extends DataObject
             } elseif(is_array($this->data['Cart']) || $this->data['Cart'] instanceof \stdClass) {
                 $this->data['Cart'] = new Cart($this->data['Cart']);
             }
-            $total = $this->data['Articles']->getTotal($addRoundingToTotal);
+            $total = $this->data['Articles']->getTotal(false);
             $withouttax = (int)round($total['withouttax'] + 0.01, 0);
             $tax = (int)round($total['tax'] + 0.01, 0);
             $withtax = (int)round($total['withtax'] + 0.01, 0);
