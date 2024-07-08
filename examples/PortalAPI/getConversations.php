@@ -12,6 +12,11 @@ $dotenv->load();
 
 $portalAPI = new PortalAPI($_ENV['TOKEN'], testMode: true);
 $conversations = $portalAPI->get('conversations');
+if(is_array($conversations) && array_key_exists('error', $conversations)) {
+    echo "Code: " . $conversations['code'] . "\n";
+    echo "Error: " . $conversations['error'] . "\n";
+    exit;
+}
 echo "Found " . count($conversations) . " conversations\n";
 if(count($conversations) > 0) {
     $oneConversation = array_pop($conversations);

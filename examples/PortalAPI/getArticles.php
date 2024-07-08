@@ -12,6 +12,11 @@ $dotenv->load();
 
 $portalAPI = new PortalAPI($_ENV['TOKEN'], testMode: true);
 $articles = $portalAPI->get('articles', params: ['filter' => 'searchArticleNumber', 'articlenr' => 'test']);
+if(is_array($articles) && array_key_exists('error', $articles)) {
+    echo "Code: " . $articles['code'] . "\n";
+    echo "Error: " . $articles['error'] . "\n";
+    exit;
+}
 echo "Found " . count($articles) . " articles\n";
 if(count($articles) > 0) {
     $oneArticle = array_pop($articles);

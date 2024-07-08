@@ -17,7 +17,7 @@ class Customer extends DataObject
     public function __construct(array $data = [])
     {
         if(is_array($data)) {
-            if($data['Billing']) {
+            if(isset($data['Billing'])) {
                 if(is_array($data['Billing'])) {
                     $this->billingAddress = new BillingAddress($data['Billing']);
                 } elseif($data['Billing'] instanceof BillingAddress) {
@@ -25,7 +25,7 @@ class Customer extends DataObject
                 }
                 unset($data['Billing']);
             }
-            if($data['Shipping']) {
+            if(isset($data['Shipping'])) {
                 if(is_array($data['Shipping'])) {
                     $this->shippingAddress = new ShippingAddress($data['Shipping']);
                 } elseif($data['Shipping'] instanceof ShippingAddress) {

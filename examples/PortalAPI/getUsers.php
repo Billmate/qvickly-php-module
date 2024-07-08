@@ -12,6 +12,11 @@ $dotenv->load();
 
 $portalAPI = new PortalAPI($_ENV['TOKEN'], testMode: true);
 $users = $portalAPI->get('users');
+if(is_array($users) && array_key_exists('error', $users)) {
+    echo "Code: " . $users['code'] . "\n";
+    echo "Error: " . $users['error'] . "\n";
+    exit;
+}
 echo "Found " . count($users) . " users\n";
 if(count($users) > 0) {
     $oneUser = array_pop($users);

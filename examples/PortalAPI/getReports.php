@@ -12,6 +12,11 @@ $dotenv->load();
 
 $portalAPI = new PortalAPI($_ENV['TOKEN'], testMode: true);
 $reports = $portalAPI->get('reports');
+if(is_array($reports) && array_key_exists('error', $reports)) {
+    echo "Code: " . $reports['code'] . "\n";
+    echo "Error: " . $reports['error'] . "\n";
+    exit;
+}
 echo "Found " . count($reports) . " reports\n";
 if(count($reports) > 0) {
     $oneReport = array_pop($reports);

@@ -12,8 +12,12 @@ $dotenv->load();
 
 $portalAPI = new PortalAPI($_ENV['TOKEN'], testMode: true);
 $whitelists = $portalAPI->get('whitelists');
+if(is_array($whitelists) && array_key_exists('error', $whitelists)) {
+    echo "Code: " . $whitelists['code'] . "\n";
+    echo "Error: " . $whitelists['error'] . "\n";
+    exit;
+}
 echo "Found " . count($whitelists) . " whitelists\n";
-var_dump($whitelists);
 if(count($whitelists) > 0) {
     $oneWhitelist = array_pop($whitelists);
     echo "And the last whitelist is:\n";

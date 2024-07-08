@@ -12,6 +12,11 @@ $dotenv->load();
 
 $portalAPI = new PortalAPI($_ENV['TOKEN'], testMode: true);
 $countries = $portalAPI->get('countries');
+if(is_array($countries) && array_key_exists('error', $countries)) {
+    echo "Code: " . $countries['code'] . "\n";
+    echo "Error: " . $countries['error'] . "\n";
+    exit;
+}
 echo "Found " . count($countries) . " countries\n";
 if(count($countries) > 0) {
     $oneCountry = array_pop($countries);

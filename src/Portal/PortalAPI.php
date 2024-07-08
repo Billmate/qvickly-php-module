@@ -5,6 +5,7 @@ namespace Qvickly\Api\Portal;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\ResponseInterface;
 use Qvickly\Api\Enums\HttpMethod;
 
 if(!defined('QVICKLY_PORTALAPI_BASE_URL')) {
@@ -23,6 +24,7 @@ if(!defined('QVICKLY_PORTALAPI_CLIENT_NAME')) {
 class PortalAPI
 {
     private Client $client;
+
     public function __construct(
         private string|null $token,
         private bool $testMode = false,
@@ -54,7 +56,8 @@ class PortalAPI
             return json_decode($response->getBody()->getContents(), true);
         } catch (\Exception $e) {
             return [
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
+                'code' => $e->getCode()
             ];
         }
     }

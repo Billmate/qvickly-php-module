@@ -12,6 +12,11 @@ $dotenv->load();
 
 $portalAPI = new PortalAPI($_ENV['TOKEN'], testMode: true);
 $currencies = $portalAPI->get('currencies');
+if(is_array($currencies) && array_key_exists('error', $currencies)) {
+    echo "Code: " . $currencies['code'] . "\n";
+    echo "Error: " . $currencies['error'] . "\n";
+    exit;
+}
 echo "Found " . count($currencies) . " currencies\n";
 if(count($currencies) > 0) {
     $oneCurrency = array_pop($currencies);

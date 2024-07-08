@@ -15,6 +15,11 @@ $userData = json_decode(base64_decode($tokenParts[1]), true);
 
 $portalAPI = new PortalAPI($_ENV['TOKEN'], testMode: true);
 $logos = $portalAPI->get('logos/' . $userData['Merchant']['id']);
+if(is_array($logos) && array_key_exists('error', $logos)) {
+    echo "Code: " . $logos['code'] . "\n";
+    echo "Error: " . $logos['error'] . "\n";
+    exit;
+}
 echo "Found " . count($logos) . " logos\n";
 if(count($logos) > 0) {
     $oneLogo = array_pop($logos);

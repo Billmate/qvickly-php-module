@@ -12,6 +12,11 @@ $dotenv->load();
 
 $portalAPI = new PortalAPI($_ENV['TOKEN'], testMode: true);
 $invoices = $portalAPI->get('invoices', params: ['filter' => 'search', 'search' => 'Testperson']);
+if(is_array($invoices) && array_key_exists('error', $invoices)) {
+    echo "Code: " . $invoices['code'] . "\n";
+    echo "Error: " . $invoices['error'] . "\n";
+    exit;
+}
 echo "Found " . count($invoices) . " invoices\n";
 if(count($invoices) > 0) {
     $oneInvoice = array_pop($invoices);

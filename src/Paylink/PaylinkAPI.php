@@ -16,9 +16,28 @@ class PaylinkAPI
         $this->paymentAPI = new PaymentAPI($this->eid, $this->secret, $this->testMode);
     }
 
-    public function create(array $data): string|array|stdClass
+    public function __call(string $name, array $arguments)
     {
-        $data = new Data($data);
+        match($name) {
+            'create' => $this->create(...$arguments),
+            default => throw new \Exception('Method not found')
+        };
+    }
+
+    public static function __callStatic(string $name, array $arguments)
+    {
+        match($name) {
+            'create' => (new self(...$arguments))->create(...$arguments),
+            default => throw new \Exception('Method not found')
+        };
+    }
+
+    protected function create(array|Data $data, bool|null|int $roundCart = null): string|array|stdClass
+    {
+        if(is_array($data)) {
+            $data = new Data($data);
+        }
+        $data->updateCart($roundCart);
         return $this->paymentAPI->addPayment($data);
     }
 
