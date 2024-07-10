@@ -85,6 +85,36 @@ class AuthAPI
         return $this->delete($url, $headers);
     }
 
+    public function bankidCollect(string $orderRef): string|array
+    {
+        $url = $this->buildUrl('bankidV6/' . $orderRef);
+        $headers = $this->buildHeaders();
+        return $this->get($url, $headers);
+    }
+
+    public function bankidSign(string $name, string|null $personalNumber = null, string|null $nonVisibleData = null)
+    {
+        $data = [
+            'name' => $name
+        ];
+        if($personalNumber !== null) {
+            $data['personalNumber'] = $personalNumber;
+        }
+        if($nonVisibleData !== null) {
+            $data['nonVisibleData'] = $nonVisibleData;
+        }
+        $url = $this->buildUrl('bankidV6/sign');
+        $headers = $this->buildHeaders();
+        return $this->post($url, $headers, json_encode($data));
+    }
+
+    public function bankidSignCollect(string $orderRef): string|array
+    {
+        $url = $this->buildUrl('bankidV6/sign/' . $orderRef);
+        $headers = $this->buildHeaders();
+        return $this->get($url, $headers);
+    }
+
     public function login(string $username, string $password): string|array
     {
         $url = $this->buildUrl('login');
