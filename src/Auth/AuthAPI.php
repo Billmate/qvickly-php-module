@@ -5,8 +5,8 @@ namespace Qvickly\Api\Auth;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
-use Qvickly\Api\Auth\Traits\AuthTraits;
 use Qvickly\Api\Enums\HttpMethod;
+use Qvickly\Api\Traits\RequestTraits;
 
 if(!defined('QVICKLY_AUTHAPI_BASE_URL')) {
     define('QVICKLY_AUTHAPI_BASE_URL', 'https://auth.billmate.se/');
@@ -14,8 +14,9 @@ if(!defined('QVICKLY_AUTHAPI_BASE_URL')) {
 
 class AuthAPI
 {
-    use AuthTraits;
+    use RequestTraits;
     private Client $client;
+    const QVICKLY_BASE_URL = QVICKLY_AUTHAPI_BASE_URL;
 
     public function __construct(private bool $debugMode = false, private array $overrides = [])
     {
@@ -75,6 +76,17 @@ class AuthAPI
         $url = $this->buildUrl('bankidV6');
         $headers = $this->buildHeaders();
         $result = $this->post($url, $headers, $data);
+        if(is_array($result) && array_key_exists('orderRef', $result)) {
+            if(array_key_exists('autoStartToken', $result)) {
+                $result['autoStartUrl'] = sprintf("bankid:///?autostarttoken=%s&redirect=null", $result['autoStartToken']);
+            }
+            if(array_key_exists('qrStartToken', $result) && array_key_exists('hashes', $result)) {
+                $result['authList'] = [];
+                foreach ($result['hashes'] as $index => $hash) {
+                    $result['authList'][] = sprintf("bankid.%s.%s.%s", $result['qrStartToken'], $index, $hash);
+                }
+            }
+        }
         return $result;
     }
 

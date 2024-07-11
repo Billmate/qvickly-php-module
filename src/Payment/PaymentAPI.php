@@ -32,7 +32,7 @@ if(!defined('QVICKLY_PAYMENTAPI_SERVER_VERSION')) {
     define('QVICKLY_PAYMENTAPI_SERVER_VERSION', '2.5.0');
 }
 if(!defined('QVICKLY_PAYMENTAPI_CLIENT_NAME')) {
-    define('QVICKLY_PAYMENTAPI_CLIENT_NAME', 'Qvickly:PHP-module:' . QVICKLY_PAYMENTAPI_CLIENT_VERSION);
+    define('QVICKLY_PAYMENTAPI_CLIENT_NAME', 'Qvickly:PHP-module:Payment-' . QVICKLY_PAYMENTAPI_CLIENT_VERSION);
 }
 
 /**
@@ -63,6 +63,8 @@ if(!defined('QVICKLY_PAYMENTAPI_CLIENT_NAME')) {
  * @method array getInvoiceByHash()
  * @method array createInvoiceFromOrderHash()
  * @method array getAPICredentials()
+ * @method array initCheckout(array|Data $data)
+ * @method array updateCheckout(array|Data $data)
  */
 class PaymentAPI
 {

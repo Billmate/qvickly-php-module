@@ -111,3 +111,75 @@ function examplePayment(int $method, string $email, string|null $pno = null): Da
         ]
     );
 }
+
+function exampleCheckout()
+{
+    return new Data(
+        [
+            "CheckoutData" => [
+                "terms" => "http://qvickly.io/terms",
+                "privacyPolicy" => "http://qvickly.io/privacy-policy",
+                "companyview" => "false",
+                "showPhoneOnDelivery" => "false",
+                "redirectOnSuccess" => "true"
+            ],
+            "PaymentData" => [
+                "currency" => "SEK",
+                "language" => "sv",
+                "country" => "SE",
+                "autoactivate" => "0",
+                "orderid" => "P123456789-" . date("Ymd") . "-" . rand(1000, 9999),
+                "logo" => "Logo2.jpg",
+                "accepturl" => "https://www.example.com/completedpayment",
+                "cancelurl" => "https://www.example.com/failedpayment",
+                "returnmethod" => "GET",
+                "callbackurl" => "https://www.example.com/callback.php"
+            ],
+            "PaymentInfo" => [
+                "paymentdate" => date('Y-m-d'),
+                "yourreference" => "Purchaser X",
+                "ourreference" => "Seller Y",
+                "projectname" => "Project Z",
+                "deliverymethod" => "Post",
+                "deliveryterms" => "FOB",
+                "autocredit" => "false"
+            ],
+            "Articles" => [
+                [
+                    "artnr" => "A123",
+                    "title" => "Article 1",
+                    "quantity" => "2",
+                    "aprice" => "1234",
+                    "discount" => "0",
+                    "withouttax" => "2468",
+                    "taxrate" => "25"
+                ],
+                [
+                    "artnr" => "B456",
+                    "title" => "Article 2",
+                    "quantity" => "3.5",
+                    "aprice" => "56780",
+                    "discount" => "10",
+                    "withouttax" => "178857",
+                    "taxrate" => "25"
+                ]
+            ],
+            "Cart" => [
+                "Handling" => [
+                    "withouttax" => "0",
+                    "taxrate" => "25"
+                ],
+                "Shipping" => [
+                    "withouttax" => "3000",
+                    "taxrate" => "25"
+                ],
+                "Total" => [
+                    "withouttax" => "184325",
+                    "tax" => "46081",
+                    "rounding" => "-6",
+                    "withtax" => "230400"
+                ]
+            ]
+        ]
+    );
+}
