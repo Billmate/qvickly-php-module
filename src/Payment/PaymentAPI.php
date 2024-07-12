@@ -70,6 +70,7 @@ class PaymentAPI
 {
 
     private Client $client;
+    const QVICKLY_BASE_URL_KEY = 'BASE_URL';
 
     /**
      * @param string $eid Qvickly identification number
@@ -89,7 +90,7 @@ class PaymentAPI
     )
     {
         $this->client = new Client([
-            'base_uri' => $this->overrides['BASE_URL'] ?? QVICKLY_PAYMENTAPI_BASE_URL
+            'base_uri' => $this->overrides[static::QVICKLY_BASE_URL_KEY] ?? QVICKLY_PAYMENTAPI_BASE_URL
         ]);
     }
 
@@ -118,7 +119,7 @@ class PaymentAPI
         if(is_array($data)) {
             $data = new Data($data);
         }
-        $url = $this->overrides['BASE_URL'] ?? QVICKLY_PAYMENTAPI_BASE_URL;
+        $url = $this->overrides[static::QVICKLY_BASE_URL_KEY] ?? QVICKLY_PAYMENTAPI_BASE_URL;
         $headers = [
             'Content-Type' => 'application/json',
         ];

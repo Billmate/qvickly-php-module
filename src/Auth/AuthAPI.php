@@ -17,11 +17,12 @@ class AuthAPI
     use RequestTraits;
     private Client $client;
     const QVICKLY_BASE_URL = QVICKLY_AUTHAPI_BASE_URL;
+    const QVICKLY_BASE_URL_KEY = 'BASE_URL';
 
     public function __construct(private bool $debugMode = false, private array $overrides = [])
     {
         $this->client = new Client([
-            'base_uri' => $this->overrides['BASE_URL'] ?? QVICKLY_AUTHAPI_BASE_URL
+            'base_uri' => $this->overrides[static::QVICKLY_BASE_URL_KEY] ?? QVICKLY_AUTHAPI_BASE_URL
         ]);
     }
 

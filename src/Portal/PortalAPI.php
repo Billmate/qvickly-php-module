@@ -24,6 +24,7 @@ if(!defined('QVICKLY_PORTALAPI_CLIENT_NAME')) {
 class PortalAPI
 {
     private Client $client;
+    const QVICKLY_BASE_URL_KEY = 'BASE_URL';
 
     public function __construct(
         private string|null $token,
@@ -32,7 +33,7 @@ class PortalAPI
     )
     {
         $this->client = new Client([
-            'base_uri' => $this->overrides['BASE_URL'] ?? QVICKLY_PORTALAPI_BASE_URL
+            'base_uri' => $this->overrides[static::QVICKLY_BASE_URL_KEY] ?? QVICKLY_PORTALAPI_BASE_URL
         ]);
     }
 

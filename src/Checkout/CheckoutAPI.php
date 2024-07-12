@@ -12,7 +12,7 @@ use Qvickly\Api\Payment\ResponseDataObjects\Data as ResponseData;
 use Qvickly\Api\Traits\RequestTraits;
 
 if(!defined('QVICKLY_CHECKOUTAPI_BASE_URL')) {
-    define('QVICKLY_CHECKOUTAPI_BASE_URL', 'https://api.qvickly.io/');
+    define('QVICKLY_CHECKOUTAPI_BASE_URL', 'https://checkout.billmate.se/');
 }
 if(!defined('QVICKLY_CHECKOUTAPI_CLIENT_VERSION')) {
     define('QVICKLY_CHECKOUTAPI_CLIENT_VERSION', '1.0.0');
@@ -30,12 +30,13 @@ class CheckoutAPI
     private PaymentAPI $paymentAPI;
     private Client $client;
     const QVICKLY_BASE_URL = QVICKLY_CHECKOUTAPI_BASE_URL;
+    const QVICKLY_BASE_URL_KEY = 'CHECKOUT_BASE_URL';
 
     public function __construct(private string $eid, private string $secret, private bool $testMode = false, private array $overrides = [])
     {
         $this->paymentAPI = new PaymentAPI(eid: $eid, secret: $secret, testMode: $testMode, overrides: $overrides);
         $this->client = new Client([
-            'base_uri' => $this->overrides['BASE_URL'] ?? QVICKLY_CHECKOUTAPI_BASE_URL
+            'base_uri' => $this->overrides[static::QVICKLY_BASE_URL_KEY] ?? QVICKLY_CHECKOUTAPI_BASE_URL
         ]);
     }
 
@@ -51,12 +52,10 @@ class CheckoutAPI
             }
             $fullUrl .= $query;
         }
-        echo "Send data to $fullUrl\n";
+        $headers['Content-Length'] = strlen($data);
         $request = new Request($method, $fullUrl, $headers, $data);
         try {
             $response = $this->client->send($request);
-            echo "Response: \n";
-            var_dump($response->getBody()->getContents());
             return json_decode($response->getBody()->getContents(), true);
         } catch (\Exception $e) {
             echo "Da shit hit the fan\n";
@@ -73,7 +72,18 @@ class CheckoutAPI
 
     private function callPOST(string $url, array $data)
     {
-        return $this->send(HttpMethod::POST->value, $url, $this->makePostData($data));
+        if(!array_key_exists('eid', $data)) {
+            $data['eid'] = $this->eid;
+        }
+        if($this->testMode) {
+            $data['test'] = 'true';
+        }
+
+        $headers = [
+            'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+        ];
+
+        return $this->send(HttpMethod::POST->value, $url, $this->makePostData($data), $headers);
     }
 
     public function initCheckout(array|Data $data): array|ResponseData
@@ -83,7 +93,6 @@ class CheckoutAPI
             $url = parse_url($result['url']);
             $pathParts = explode('/', ltrim($url['path'], '/'));
             if(count($pathParts) > 1) {
-                var_dump($pathParts);
                 $result['hash'] = $pathParts[1];
             }
         }
@@ -186,9 +195,11 @@ class CheckoutAPI
         return $this->callPOST('/public/ajax.php?updateBillingEmail', $payload);
     }
 
-    public function step1()
+    public function step1(string $hash, array $data)
     {
-
+        $data['hash'] = $hash;
+        $data['status'] = $data['status'] ?? 'Step1Loaded';
+        return $this->callPOST('/public/ajax.php?step1', $data);
     }
 
     public function getCityFromZipcode()

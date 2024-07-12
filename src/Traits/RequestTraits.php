@@ -6,7 +6,7 @@ trait RequestTraits
 {
     private function buildUrl(string $path): string
     {
-        $base = rtrim($this->overrides['BASE_URL'] ?? static::QVICKLY_BASE_URL, '/');
+        $base = rtrim($this->overrides[static::QVICKLY_BASE_URL_KEY] ?? static::QVICKLY_BASE_URL, '/');
         $path = ltrim($path, '/');
         return sprintf('%s/%s', $base, $path);
     }
@@ -22,7 +22,7 @@ trait RequestTraits
     {
         $string = [];
         foreach($data as $key => $value) {
-            $string[] = $key . "=" . $value;
+            $string[] = rawurlencode($key) . "=" . rawurlencode($value);
         }
         return implode('&', $string);
     }
