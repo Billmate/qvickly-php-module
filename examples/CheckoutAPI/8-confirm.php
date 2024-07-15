@@ -14,8 +14,8 @@ use function Qvickly\Api\Payment\Helpers\exampleCheckout;
 use Qvickly\Api\Enums\PaymentMethod;
 
 $checkoutAPI = new CheckoutAPI($_ENV['EID'], $_ENV['SECRET'], true, [
-    'BASE_URL' => 'https://api.development.billmate.se/',
-    'CHECKOUT_BASE_URL' => 'https://checkout.development.billmate.se/',
+    // 'BASE_URL' => 'https://api.development.billmate.se/',
+    // 'CHECKOUT_BASE_URL' => 'https://checkout.development.billmate.se/',
 ]);
 
 echo "Create checkout\n";
@@ -43,12 +43,9 @@ $paymentMethod = $checkoutAPI->updatePaymentMethod($checkout['hash'], PaymentMet
 echo "Get payment\n";
 $get = $checkoutAPI->get($checkout['hash']);
 
-echo "Validate payment\n";
-$validate = $checkoutAPI->validate($checkout['hash'], $get);
-
 echo "Confirm payment\n";
 $confirm = $checkoutAPI->confirm($checkout['hash'], $get);
 
 echo json_encode($confirm, JSON_PRETTY_PRINT) . "\n";
 
-echo "URL to use: " . $validate['url'] . "\n";
+echo "URL to use: " . $confirm['url'] . "\n";
