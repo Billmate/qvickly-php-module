@@ -58,7 +58,6 @@ class CheckoutAPI
             $response = $this->client->send($request);
             return json_decode($response->getBody()->getContents(), true);
         } catch (\Exception $e) {
-            echo "Da shit hit the fan\n";
             return [
                 'error' => $e->getMessage(),
                 'code' => $e->getCode()
@@ -82,10 +81,17 @@ class CheckoutAPI
         $headers = [
             'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
         ];
-
         return $this->send(HttpMethod::POST->value, $url, $this->makePostData($data), $headers);
     }
 
+    public function getVersion()
+    {
+        $payload = [
+            'version' => '0.0.0'
+        ];
+        $version = $this->callPOST('/public/ajax.php', $payload);
+        return $version['version.compare'] ?? '0.0.0';
+    }
     public function initCheckout(array|Data $data): array|ResponseData
     {
         $result = $this->paymentAPI->initCheckout($data);
@@ -137,9 +143,12 @@ class CheckoutAPI
 
     }
 
-    public function get()
+    public function get(string $hash)
     {
-
+        $payload = [
+            'hash' => $hash
+        ];
+        return $this->callPOST('/public/ajax.php?get', $payload);
     }
 
     public function clearCheckout()
@@ -157,14 +166,22 @@ class CheckoutAPI
 
     }
 
-    public function updatePaymentMethod()
+    public function updatePaymentMethod(string $hash, string|int $paymentMethod)
     {
-
+        $payload = [
+            'hash' => $hash,
+            'method' => (string)$paymentMethod
+        ];
+        return $this->callPOST('/public/ajax.php?updatePaymentMethod', $payload);
     }
 
-    public function updatePaymentPlan()
+    public function updatePaymentPlan(string $hash, string|int $paymentPlanId)
     {
-
+        $payload = [
+            'hash' => $hash,
+            'paymentplanin' => (string)$paymentPlanId
+        ];
+        return $this->callPOST('/public/ajax.php?updatePaymentPlan', $payload);
     }
 
     public function updateBillingAddress()
@@ -202,19 +219,26 @@ class CheckoutAPI
         return $this->callPOST('/public/ajax.php?step1', $data);
     }
 
-    public function getCityFromZipcode()
+    public function getCityFromZipcode(string $hash, string $zipcode)
     {
-
+        $payload = [
+            'hash' => $hash,
+            'zipcode' => $zipcode
+        ];
+        echo "Payload: " . json_encode($payload, JSON_PRETTY_PRINT) . "\n";
+        return $this->callPOST('/public/ajax.php?getCityFromZipcode', $payload);
     }
 
-    public function validate()
+    public function validate(string $hash, array $data)
     {
-
+        $data['hash'] = $hash;
+        return $this->callPOST('/public/ajax.php?validate', $data);
     }
 
-    public function confirm()
+    public function confirm(string $hash, array $data)
     {
-
+        $data['hash'] = $hash;
+        return $this->callPOST('/public/ajax.php?confirm', $data);
     }
 
     public function cancel()
@@ -222,14 +246,20 @@ class CheckoutAPI
 
     }
 
-    public function getpaymentplans()
+    public function getpaymentplans(string $hash)
     {
-
+        $payload = [
+            'hash' => $hash
+        ];
+        return $this->callPOST('/public/ajax.php?getpaymentplans', $payload);
     }
 
-    public function getPaymentMethods()
+    public function getPaymentMethods(string $hash)
     {
-
+        $payload = [
+            'hash' => $hash
+        ];
+        return $this->callPOST('/public/ajax.php?getPaymentMethods', $payload);
     }
 
     public function removeQuickPaymentCard()

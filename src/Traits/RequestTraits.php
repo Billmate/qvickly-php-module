@@ -18,11 +18,16 @@ trait RequestTraits
             ]
         );
     }
-    private function makePostData(array $data): string
+    private function makePostData(array $data, string $subPrefix = ''): string|array
     {
         $string = [];
         foreach($data as $key => $value) {
-            $string[] = rawurlencode($key) . "=" . rawurlencode($value);
+            $currentKey = $subPrefix ? $subPrefix . '[' . rawurlencode($key) . ']' : rawurlencode($key);
+            if(is_array($value)) {
+                $string[] = $this->makePostData($value, $currentKey);
+            } else {
+                $string[] = $currentKey . "=" . rawurlencode($value);
+            }
         }
         return implode('&', $string);
     }

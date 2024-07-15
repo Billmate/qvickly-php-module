@@ -17,10 +17,7 @@ $checkoutAPI = new CheckoutAPI($_ENV['EID'], $_ENV['SECRET'], true, [
 //    'CHECKOUT_BASE_URL' => 'https://checkout.development.billmate.se/',
 ]);
 
-echo "Create checkout\n";
-$payload = exampleCheckout();
-$checkout = $checkoutAPI->initCheckout($payload);
+echo "Get version\n";
+$version = $checkoutAPI->getVersion();
 
-echo json_encode($checkout, JSON_PRETTY_PRINT) . "\n";
-
-echo "URL to use: " . $checkout['url'] . "\n";
+echo "Current Checkout version is " . $version . "\n";

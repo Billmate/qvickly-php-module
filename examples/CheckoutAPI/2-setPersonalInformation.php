@@ -21,6 +21,15 @@ echo "Create checkout\n";
 $payload = exampleCheckout();
 $checkout = $checkoutAPI->initCheckout($payload);
 
-echo json_encode($checkout, JSON_PRETTY_PRINT) . "\n";
+echo "Step 1\n";
+$personalInfo = $checkoutAPI->step1($checkout['hash'], [
+    'pno' => $_ENV['PNO'],
+    'email' => $_ENV['EMAIL'],
+    'type' => 'person',
+    'zip' => $_ENV['ZIP'],
+    'phonenumber' => $_ENV['PHONENUMBER'],
+]);
+
+echo json_encode($personalInfo, JSON_PRETTY_PRINT) . "\n";
 
 echo "URL to use: " . $checkout['url'] . "\n";
