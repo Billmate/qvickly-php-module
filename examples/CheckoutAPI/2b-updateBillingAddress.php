@@ -30,7 +30,7 @@ $personalInfo = $checkoutAPI->step1($checkout['hash'], [
     'phonenumber' => $_ENV['PHONENUMBER'],
 ]);
 
-echo "Update shipping address\n";
+echo "Update billing address\n";
 $billingAddress = $checkoutAPI->updateBillingAddress($checkout['hash'], [
     'firstname' => 'FIRSTNAME',
     'lastname' => 'LASTNAME',

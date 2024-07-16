@@ -64,7 +64,8 @@ class CheckoutAPI
         $request = new Request($method, $fullUrl, $headers, $data);
         try {
             $response = $this->client->send($request, [
-                'cookies' => $this->cookieJar
+                'cookies' => $this->cookieJar,
+//                'allow_redirects' => false,
             ]);
             return json_decode($response->getBody()->getContents(), true);
         } catch (\Exception $e) {
