@@ -22,23 +22,9 @@ echo "Create checkout\n";
 $payload = exampleCheckout();
 $checkout = $checkoutAPI->initCheckout($payload);
 
-//echo "Step 1\n";
-//$personalInfo = $checkoutAPI->step1($checkout['hash'], [
-//    'pno' => $_ENV['PNO'],
-//    'email' => $_ENV['EMAIL'],
-//    'type' => 'person',
-//    'zip' => $_ENV['ZIP'],
-//    'phonenumber' => $_ENV['PHONENUMBER'],
-//]);
-
 echo "Reset\n";
 $reset = $checkoutAPI->reset($checkout['hash']);
 
 echo json_encode($reset, JSON_PRETTY_PRINT) . "\n";
 
-//echo "Get payment\n";
-//$get = $checkoutAPI->get($checkout['hash']);
-//
-//echo json_encode($get, JSON_PRETTY_PRINT) . "\n";
-//
-//echo "URL to use: " . $get['url'] . "\n";
+echo "URL to use: " . $checkout['url'] . "\n";

@@ -47,6 +47,24 @@ class Customer extends DataObject
         return parent::__get($name);
     }
 
+    public function setBillingAddress(array|BillingAddress $data): static
+    {
+        if(is_array($data)) {
+            $data = new BillingAddress($data);
+        }
+        $this->billingAddress = $data;
+        return $this;
+    }
+
+    public function setShippingAddress(array|ShippingAddress $data): static
+    {
+        if(is_array($data)) {
+            $data = new ShippingAddress($data);
+        }
+        $this->shippingAddress = $data;
+        return $this;
+    }
+
     public function export(bool $convertToExportFormat = false): array
     {
         $export = parent::export($convertToExportFormat);

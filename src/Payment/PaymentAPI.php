@@ -39,7 +39,7 @@ if(!defined('QVICKLY_PAYMENTAPI_CLIENT_NAME')) {
  * Class PaymentAPI
  * @package Qvickly\Api\Payment
  * @method array getAddress()
- * @method array addPayment(array|Data $data)
+ * @method array addPayment(array|Data $data): array|string|DataObjectInterface|stdClass
  * @method array activatePayment(array|Data $data)
  * @method array updatePayment()
  * @method array cancelPayment()

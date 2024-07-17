@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Qvickly\Api\Paylink;
 
+use Qvickly\Api\Payment\Interfaces\DataObjectInterface;
 use Qvickly\Api\Payment\RequestDataObjects\Data;
 use Qvickly\Api\Payment\PaymentAPI;
 use stdClass;
@@ -42,7 +43,7 @@ class PaylinkAPI
         };
     }
 
-    protected function create(array|Data $data, bool|null|int $roundCart = null): string|array|stdClass
+    protected function create(array|Data $data, bool|null|int $roundCart = null): array|string|DataObjectInterface|stdClass
     {
         if(is_array($data)) {
             $data = new Data($data);

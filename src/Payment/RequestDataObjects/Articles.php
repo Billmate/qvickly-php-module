@@ -16,6 +16,16 @@ class Articles extends DataObject
         }
     }
 
+    public function addArticle(array|Article $data, bool|null|int $roundCart = null): static
+    {
+        if(is_array($data)) {
+            $data = new Article($data);
+        }
+        $this->data[] = $data;
+
+        return $this;
+    }
+
     public function getTotal(bool $useRounding = false): array
     {
         $total = [
