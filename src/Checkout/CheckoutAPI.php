@@ -267,7 +267,6 @@ class CheckoutAPI
             'hash' => $hash,
             'zipcode' => $zipcode
         ];
-        echo "Payload: " . json_encode($payload, JSON_PRETTY_PRINT) . "\n";
         return $this->callPOST('/public/ajax.php?getCityFromZipcode', $payload);
     }
 
