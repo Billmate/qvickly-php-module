@@ -21,7 +21,7 @@ echo "Found " . count($conversations) . " conversations\n";
 if(count($conversations) > 0) {
     $oneConversation = array_pop($conversations);
     $oneConversationId = $oneConversation['mexcParamvaluesetsid'];
-    $conversation = $portalAPI->get('conversations/' . $oneConversation);
+    $conversation = $portalAPI->get('conversations/' . $oneConversationId);
     echo "And the last conversation is:\n";
     echo json_encode($conversation, JSON_PRETTY_PRINT);
 }
