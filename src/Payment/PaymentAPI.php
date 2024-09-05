@@ -65,6 +65,7 @@ if(!defined('QVICKLY_PAYMENTAPI_CLIENT_NAME')) {
  * @method array getAPICredentials()
  * @method array initCheckout(array|Data $data)
  * @method array updateCheckout(array|Data $data)
+ * @method array updateStatusLogOfInvoiceByHash(array|Data $data)
  */
 class PaymentAPI
 {

@@ -26,6 +26,7 @@ This folder contains examples for the Qvickly Payment API. These examples are th
 - [x] [getOrderInfo](Simple/getOrderInfo.php)
 - [x] [getOrderByHash](Simple/getOrderByHash.php)
 - [x] [getInvoiceByHash](Simple/getInvoiceByHash.php)
+- [x] [updateStatusLogOfInvoiceByHash](Simple/updateStatusLogOfInvoiceByHash.php)
 - [x] [createInvoiceFromOrder](createInvoiceFromOrder.php)
 - [x] [getAPICredentials](Simple/getAPICredentials.php)
 
