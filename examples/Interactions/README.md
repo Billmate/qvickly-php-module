@@ -14,7 +14,7 @@ This folder contains examples of interactions between different API's.
 
 ## Update status log of invoice by invoice number
 
-[updateStatusLogOfInvoiceByInvoiceNumber](updateStatusLogOfInvoiceByInvoiceNumber.php)
+[updateStatusLogByInvoiceNumber](updateStatusLogByInvoiceNumber.php)
 
 The normal way to update the status log through the Payment API is to use the `updateStatusLogOfInvoiceByHash` method. That will require us to know the hash of the invoice. But if we only know the invoice number then we will have to ask the Portal API for the hash. This example shows how to do that.
 
