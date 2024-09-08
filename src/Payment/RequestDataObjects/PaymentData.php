@@ -20,6 +20,7 @@ use Qvickly\Api\Structure\StructureProperty;
     StructureProperty(name: 'cancelurl',     type: 'string'),
     StructureProperty(name: 'callbackurl',   type: 'string'),
     StructureProperty(name: 'bankid',        type: 'boolstr'),
+    StructureProperty(name: 'feeid',         type: 'int',   exportAs: 'string'),
     ]
 class PaymentData extends DataObject
 {
