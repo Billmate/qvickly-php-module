@@ -67,7 +67,11 @@ class CheckoutAPI
                 'cookies' => $this->cookieJar,
 //                'allow_redirects' => false,
             ]);
-            return json_decode($response->getBody()->getContents(), true);
+            $returnedData = $response->getBody()->getContents();
+            if($returnedData == 'N;' || preg_match('/^[\]\{]/', $returnedData)) {
+                return json_decode($returnedData, true);
+            }
+            return $returnedData;
         } catch (\Exception $e) {
             return [
                 'error' => $e->getMessage(),
@@ -318,7 +322,7 @@ class CheckoutAPI
         return $this->callPOST('/public/ajax.php?removeQuickPaymentCard', $payload);
     }
 
-    public function terms(string $hash, int|string $amount, int|string $method, int|string $method_option = 0)
+    public function terms(string $hash, int|string $amount = 0, int|string $method = 0, int|string $method_option = 0)
     {
         $payload = [
             'hash' => $hash,
