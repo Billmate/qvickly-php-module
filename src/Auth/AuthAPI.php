@@ -66,6 +66,15 @@ class AuthAPI
         }
     }
 
+    public function verify(string $token)
+    {
+        $url = $this->buildUrl('me');
+        $headers = $this->buildHeaders([
+            'x-auth-token' => $token,
+        ]);
+        return $this->get($url, $headers);
+    }
+
     public function bankidLogin(string|null $personalNumber = null)
     {
         $data = null;
@@ -105,26 +114,41 @@ class AuthAPI
         return $this->get($url, $headers);
     }
 
-    public function bankidSign(string $name, string|null $personalNumber = null, string|null $nonVisibleData = null)
+    public function bankidSign(string $token, string $name, string $language, string $nonVisibleData, string|null $personalNumber = null)
     {
         $data = [
-            'name' => $name
+            'language' => $language,
+            'userNonVisibleData' => $nonVisibleData
         ];
         if($personalNumber !== null) {
             $data['personalNumber'] = $personalNumber;
         }
-        if($nonVisibleData !== null) {
-            $data['nonVisibleData'] = $nonVisibleData;
+        $url = $this->buildUrl('bankidV6/sign/' . $name);
+        $headers = $this->buildHeaders([
+            'x-auth-token' => $token,
+        ]);
+        var_dump($data);
+        $result = $this->post($url, $headers, json_encode($data));
+        if(is_array($result) && array_key_exists('orderRef', $result)) {
+            if(array_key_exists('autoStartToken', $result)) {
+                $result['autoStartUrl'] = sprintf("bankid:///?autostarttoken=%s&redirect=null", $result['autoStartToken']);
+            }
+            if(array_key_exists('qrStartToken', $result) && array_key_exists('hashes', $result)) {
+                $result['signList'] = [];
+                foreach ($result['hashes'] as $index => $hash) {
+                    $result['signList'][] = sprintf("bankid.%s.%s.%s", $result['qrStartToken'], $index, $hash);
+                }
+            }
         }
-        $url = $this->buildUrl('bankidV6/sign');
-        $headers = $this->buildHeaders();
-        return $this->post($url, $headers, json_encode($data));
+        return $result;
     }
 
-    public function bankidSignCollect(string $orderRef): string|array
+    public function bankidSignCollect(string $token, string $orderRef): string|array
     {
-        $url = $this->buildUrl('bankidV6/sign/' . $orderRef);
-        $headers = $this->buildHeaders();
+        $url = $this->buildUrl('bankidV6/sign/collect/' . $orderRef);
+        $headers = $this->buildHeaders([
+            'x-auth-token' => $token,
+        ]);
         return $this->get($url, $headers);
     }
 
