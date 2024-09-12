@@ -44,6 +44,7 @@ if(!defined('QVICKLY_PAYMENTAPI_CLIENT_NAME')) {
  * @method array updatePayment()
  * @method array cancelPayment()
  * @method array creditPayment()
+ * @method array duplicatePayment()
  * @method array getAccountInfo()
  * @method string getTerms()
  * @method array getPaymentPlans()
