@@ -10,6 +10,7 @@ $dotenv->load();
 
 use Qvickly\Api\Payment\PaymentAPI;
 use Qvickly\Api\Payment\RequestDataObjects\Data;
+use Qvickly\Api\Payment\RequestDataObjects\PaymentData;
 use \Qvickly\Api\Payment\RequestDataObjects\KalpForm;
 
 $paymentAPI = new PaymentAPI($_ENV['EID'], $_ENV['SECRET']);
@@ -23,7 +24,7 @@ $kalpData = new KalpForm(
         "monthlyLoans" => "2500",
     ]
 );
-$paymentData = new \Qvickly\Api\Payment\RequestDataObjects\PaymentData((
+$paymentData = new PaymentData((
     [
         "paymentplanid" => "1",
     ]
