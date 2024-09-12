@@ -66,6 +66,7 @@ if(!defined('QVICKLY_PAYMENTAPI_CLIENT_NAME')) {
  * @method array initCheckout(array|Data $data)
  * @method array updateCheckout(array|Data $data)
  * @method array updateStatusLogOfInvoiceByHash(array|Data $data)
+ * @method array uploadKalpForm(array|Data $data)
  */
 class PaymentAPI
 {

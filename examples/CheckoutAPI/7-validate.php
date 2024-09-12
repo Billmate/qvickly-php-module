@@ -38,7 +38,7 @@ echo "Payment methods\n";
 $paymentMethods = $checkoutAPI->getPaymentMethods($checkout['hash']);
 
 echo "Update payment method\n";
-$paymentMethod = $checkoutAPI->updatePaymentMethod($checkout['hash'], PaymentMethod::CARD->value);
+$paymentMethod = $checkoutAPI->updatePaymentMethod($checkout['hash'], PaymentMethod::FACTORING->value);
 
 echo "Get payment\n";
 $get = $checkoutAPI->get($checkout['hash']);
